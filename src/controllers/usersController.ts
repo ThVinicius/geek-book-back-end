@@ -4,9 +4,9 @@ import { IUser } from '../types/userTypes'
 import sessionsService from '../services/sessionsService'
 
 async function signUp(req: Request, res: Response) {
-  const { email, password } = req.body as IUser
+  const data = req.body as IUser
 
-  await usersService.create({ email, password })
+  await usersService.create(data)
 
   return res.sendStatus(201)
 }
