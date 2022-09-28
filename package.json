@@ -4,8 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon ./src/server.ts",
+    "prisma": "prisma studio",
+    "build": "prisma migrate deploy && tsc",
+    "start": "node ./dist/src/server.js",
+    "test": "dotenv -e .env.test -- jest --no-cache -i"
   },
+
   "keywords": [],
   "author": "",
   "license": "ISC",
