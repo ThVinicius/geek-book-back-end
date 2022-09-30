@@ -11,13 +11,14 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  nickname  String   @unique @db.VarChar(16)
-  avatar    String?
-  email     String   @unique
-  password  String
-  createdAt DateTime @default(now()) @db.Timestamptz(6)
-  session   Session?
+  id          Int           @id @default(autoincrement())
+  nickname    String        @unique @db.VarChar(16)
+  avatar      String?
+  email       String        @unique
+  password    String
+  createdAt   DateTime      @default(now()) @db.Timestamptz(6)
+  session     Session?
+  userHistory UserHistory[]
 
   @@map("users")
 }
@@ -30,4 +31,37 @@ model Session {
   user      User     @relation(fields: [userId], references: [id])
 
   @@map("sessions")
+}
+
+model Collection {
+  id          Int           @id @default(autoincrement())
+  name        String        @unique
+  poster      String?
+  synopsis    String?
+  category    category
+  createdAt   DateTime      @default(now()) @db.Timestamptz(6)
+  userHistory UserHistory[]
+
+  @@map("collections")
+}
+
+model UserHistory {
+  id           Int        @id @default(autoincrement())
+  userId       Int
+  collectionId Int
+  lastSeen     Int
+  createdAt    DateTime   @default(now()) @db.Timestamptz(6)
+  user         User       @relation(fields: [userId], references: [id])
+  collection   Collection @relation(fields: [collectionId], references: [id])
+
+  @@map("userHistory")
+}
+
+enum category {
+  manga
+  anime
+  manhua
+  donghua
+  novel
+  serie
 }
