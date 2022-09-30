@@ -12,15 +12,15 @@ async function create(req: Request, res: Response) {
 
   const data = { category, name, synopsis, poster }
 
-  const collection = await collectionsService.upsert(data)
+  const { id: collectionId } = await collectionsService.upsert(data)
 
-  const collectionId = collection.id
-
-  const userCollection = await userCollectionsRepository.create({
+  const { id } = await userCollectionsRepository.create({
     userId,
     collectionId,
     lastSeen
   })
+
+  const userCollection = { id, category, name, poster, synopsis, lastSeen }
 
   return res.status(201).send(userCollection)
 }
