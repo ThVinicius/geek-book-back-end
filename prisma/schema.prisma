@@ -54,6 +54,7 @@ model UserHistory {
   user         User       @relation(fields: [userId], references: [id])
   collection   Collection @relation(fields: [collectionId], references: [id])
 
+  @@unique([userId, collectionId])
   @@map("userHistory")
 }
 
