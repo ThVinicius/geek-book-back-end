@@ -11,14 +11,14 @@ datasource db {
 }
 
 model User {
-  id          Int           @id @default(autoincrement())
-  nickname    String        @unique @db.VarChar(16)
+  id          Int              @id @default(autoincrement())
+  nickname    String           @unique @db.VarChar(16)
   avatar      String?
-  email       String        @unique
+  email       String           @unique
   password    String
-  createdAt   DateTime      @default(now()) @db.Timestamptz(6)
+  createdAt   DateTime         @default(now()) @db.Timestamptz(6)
   session     Session?
-  userHistory UserHistory[]
+  userHistory UserCollection[]
 
   @@map("users")
 }
@@ -34,18 +34,18 @@ model Session {
 }
 
 model Collection {
-  id          Int           @id @default(autoincrement())
-  name        String        @unique
-  poster      String?
-  synopsis    String?
-  category    category
-  createdAt   DateTime      @default(now()) @db.Timestamptz(6)
-  userHistory UserHistory[]
+  id             Int              @id @default(autoincrement())
+  name           String           @unique
+  poster         String?
+  synopsis       String?
+  category       category
+  createdAt      DateTime         @default(now()) @db.Timestamptz(6)
+  userCollection UserCollection[]
 
   @@map("collections")
 }
 
-model UserHistory {
+model UserCollection {
   id           Int        @id @default(autoincrement())
   userId       Int
   collectionId Int
@@ -55,7 +55,7 @@ model UserHistory {
   collection   Collection @relation(fields: [collectionId], references: [id])
 
   @@unique([userId, collectionId])
-  @@map("userHistory")
+  @@map("userCollections")
 }
 
 enum category {

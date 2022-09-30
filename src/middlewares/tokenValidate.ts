@@ -18,11 +18,11 @@ async function tokenValidate(req: Request, res: Response, next: NextFunction) {
 
   const secretKey: string = process.env.JWT_SECRET!
 
-  const data = jwt.verify(token, secretKey)
+  const data = <jwt.UserIDJwtPayload>jwt.verify(token, secretKey)
 
   await sessionsService.validateSession(token)
 
-  res.locals.session = data
+  res.locals.session = data.id
 
   next()
 }

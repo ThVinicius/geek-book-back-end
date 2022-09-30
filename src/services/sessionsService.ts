@@ -13,7 +13,7 @@ function createSession(user: User) {
 
   const token = jwt.sign({ id }, secretKey, config)
 
-  return { userId: user.id, token }
+  return { userId: id, token }
 }
 
 async function upsert(data: ISession) {
