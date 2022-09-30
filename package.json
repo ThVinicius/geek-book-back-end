@@ -8,9 +8,12 @@
     "prisma": "prisma studio",
     "build": "prisma migrate deploy && tsc",
     "start": "node ./dist/src/server.js",
+    "seed": "prisma db seed",
     "test": "dotenv -e .env.test -- jest --no-cache -i"
   },
-
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

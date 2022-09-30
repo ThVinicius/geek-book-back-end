@@ -33,13 +33,23 @@ model Session {
   @@map("sessions")
 }
 
+model Category {
+  id         Int          @id @default(autoincrement())
+  name       String       @unique
+  createdAt  DateTime     @default(now()) @db.Timestamptz(6)
+  Collection Collection[]
+
+  @@map("categories")
+}
+
 model Collection {
   id             Int              @id @default(autoincrement())
   name           String           @unique
+  categoryId     Int
   poster         String?
   synopsis       String?
-  category       category
   createdAt      DateTime         @default(now()) @db.Timestamptz(6)
+  category       Category         @relation(fields: [categoryId], references: [id])
   userCollection UserCollection[]
 
   @@map("collections")
@@ -56,13 +66,4 @@ model UserCollection {
 
   @@unique([userId, collectionId])
   @@map("userCollections")
-}
-
-enum category {
-  manga
-  anime
-  manhua
-  donghua
-  novel
-  serie
 }
