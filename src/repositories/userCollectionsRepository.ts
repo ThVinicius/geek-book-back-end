@@ -5,4 +5,11 @@ function create(data: IUserCollection) {
   return prisma.userCollection.create({ data })
 }
 
-export default { create }
+function getByUserId(userId: number) {
+  return prisma.userCollection.findMany({
+    where: { userId },
+    select: { id: true, lastSeen: true, collection: true }
+  })
+}
+
+export default { create, getByUserId }

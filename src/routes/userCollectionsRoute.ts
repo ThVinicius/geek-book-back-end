@@ -14,4 +14,6 @@ route.post(
   userCollectionsController.create
 )
 
+route.get('/user-collections', userCollectionsController.getByUserId)
+
 export default route

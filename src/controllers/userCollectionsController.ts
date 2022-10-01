@@ -28,4 +28,12 @@ async function create(req: Request, res: Response) {
   return res.status(201).send(userCollection)
 }
 
-export default { create }
+async function getByUserId(_: Request, res: Response) {
+  const userId: number = res.locals.session
+
+  const collections = await userCollectionsRepository.getByUserId(userId)
+
+  return res.status(200).send(collections)
+}
+
+export default { create, getByUserId }

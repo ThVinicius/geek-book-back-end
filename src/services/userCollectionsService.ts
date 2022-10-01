@@ -19,4 +19,8 @@ async function validateCategory(categoryId: number) {
   return category!
 }
 
-export default { create }
+function getByUserId(userId: number) {
+  return userCollectionsRepository.getByUserId(userId)
+}
+
+export default { create, getByUserId }
