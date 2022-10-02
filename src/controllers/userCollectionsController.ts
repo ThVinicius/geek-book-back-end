@@ -36,4 +36,21 @@ async function getByUserId(_: Request, res: Response) {
   return res.status(200).send(collections)
 }
 
-export default { create, getByUserId }
+async function updateLastSeen(req: Request, res: Response) {
+  const userId: number = res.locals.session
+
+  const { collectionId, lastSeen } = req.body as {
+    collectionId: number
+    lastSeen: number
+  }
+
+  const collection = await userCollectionsRepository.updateLastSeen(
+    collectionId,
+    userId,
+    lastSeen
+  )
+
+  return res.status(200).send(collection)
+}
+
+export default { create, getByUserId, updateLastSeen }

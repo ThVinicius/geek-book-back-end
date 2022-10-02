@@ -23,4 +23,16 @@ function getByUserId(userId: number) {
   return userCollectionsRepository.getByUserId(userId)
 }
 
-export default { create, getByUserId }
+function updateLastSeen(
+  collectionId: number,
+  userId: number,
+  lastSeen: number
+) {
+  return userCollectionsRepository.updateLastSeen(
+    collectionId,
+    userId,
+    lastSeen
+  )
+}
+
+export default { create, getByUserId, updateLastSeen }

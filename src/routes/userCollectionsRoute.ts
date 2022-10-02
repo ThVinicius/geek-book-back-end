@@ -16,4 +16,10 @@ route.post(
 
 route.get('/user-collections', userCollectionsController.getByUserId)
 
+route.patch(
+  '/user-collections',
+  schemaValidator(userCollectionSchemas.update),
+  userCollectionsController.updateLastSeen
+)
+
 export default route

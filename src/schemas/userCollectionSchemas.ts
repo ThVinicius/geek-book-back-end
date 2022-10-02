@@ -8,4 +8,9 @@ const create = joi.object({
   lastSeen: joi.number().strict().greater(-1).required()
 })
 
-export default { create }
+const update = joi.object({
+  collectionId: joi.number().strict().greater(0).required(),
+  lastSeen: joi.number().strict().greater(-1).required()
+})
+
+export default { create, update }
