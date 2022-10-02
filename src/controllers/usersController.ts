@@ -18,7 +18,13 @@ async function signIn(req: Request, res: Response) {
 
   await sessionsService.upsert(session)
 
-  return res.status(200).send({ token: session.token })
+  return res
+    .status(200)
+    .send({
+      token: session.token,
+      nickname: user.nickname,
+      avatar: user.avatar
+    })
 }
 
 export default { signUp, signIn }
