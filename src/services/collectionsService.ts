@@ -5,4 +5,8 @@ function upsert(data: ICollection) {
   return collectionsRepository.upsert(data)
 }
 
-export default { upsert }
+function getByCategory(categoryId: number) {
+  return collectionsRepository.getByCategory(categoryId)
+}
+
+export default { upsert, getByCategory }

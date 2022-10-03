@@ -9,4 +9,8 @@ function upsert(data: ICollection) {
   })
 }
 
-export default { upsert }
+function getByCategory(categoryId: number) {
+  return prisma.collection.findMany({ where: { categoryId } })
+}
+
+export default { upsert, getByCategory }
