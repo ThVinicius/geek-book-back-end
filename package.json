@@ -9,7 +9,7 @@
     "build": "prisma migrate deploy && prisma db seed && tsc",
     "start": "node ./dist/src/server.js",
     "seed": "prisma db seed",
-    "test": "dotenv -e .env.test -- jest --no-cache -i"
+    "test": "dotenv -e .env.test -- jest --no-cache -i --verbose"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"

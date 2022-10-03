@@ -5,7 +5,9 @@ function getById(id: number) {
 }
 
 function getAll() {
-  return prisma.category.findMany()
+  return prisma.category.findMany({
+    select: { id: true, name: true }
+  })
 }
 
 export default { getById, getAll }
