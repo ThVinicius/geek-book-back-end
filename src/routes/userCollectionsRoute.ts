@@ -22,4 +22,12 @@ route.patch(
   userCollectionsController.updateLastSeen
 )
 
+const isParams = true
+
+route.delete(
+  '/user-collections/:collectionId',
+  schemaValidator(userCollectionSchemas.remove, isParams),
+  userCollectionsController.remove
+)
+
 export default route

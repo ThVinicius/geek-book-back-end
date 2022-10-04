@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import userCollectionsRepository from '../services/userCollectionsService'
+import userCollectionsService from '../services/userCollectionsService'
 import collectionsService from '../services/collectionsService'
 import { ICollection } from '../types/collectionTypes'
 
@@ -14,7 +14,7 @@ async function create(req: Request, res: Response) {
 
   const { id: collectionId } = await collectionsService.upsert(data)
 
-  const { id, category } = await userCollectionsRepository.create(
+  const { id, category } = await userCollectionsService.create(
     {
       userId,
       collectionId,
@@ -31,7 +31,7 @@ async function create(req: Request, res: Response) {
 async function getByUserId(_: Request, res: Response) {
   const userId: number = res.locals.session
 
-  const collections = await userCollectionsRepository.getByUserId(userId)
+  const collections = await userCollectionsService.getByUserId(userId)
 
   return res.status(200).send(collections)
 }
@@ -44,7 +44,7 @@ async function updateLastSeen(req: Request, res: Response) {
     lastSeen: number
   }
 
-  const collection = await userCollectionsRepository.updateLastSeen(
+  const collection = await userCollectionsService.updateLastSeen(
     collectionId,
     userId,
     lastSeen
@@ -53,4 +53,14 @@ async function updateLastSeen(req: Request, res: Response) {
   return res.status(200).send(collection)
 }
 
-export default { create, getByUserId, updateLastSeen }
+async function remove(req: Request, res: Response) {
+  const userId: number = res.locals.session
+
+  const collectionId = Number(req.params.collectionId)
+
+  await userCollectionsService.remove(collectionId, userId)
+
+  return res.sendStatus(200)
+}
+
+export default { create, getByUserId, updateLastSeen, remove }

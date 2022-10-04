@@ -13,4 +13,8 @@ const update = joi.object({
   lastSeen: joi.number().strict().greater(-1).required()
 })
 
-export default { create, update }
+const remove = joi.object({
+  collectionId: joi.number().greater(0).required()
+})
+
+export default { create, update, remove }

@@ -35,4 +35,10 @@ function updateLastSeen(
   })
 }
 
-export default { create, getByUserId, updateLastSeen }
+async function remove(collectionId: number, userId: number) {
+  await prisma.userCollection.delete({
+    where: { userId_collectionId: { collectionId, userId } }
+  })
+}
+
+export default { create, getByUserId, updateLastSeen, remove }
