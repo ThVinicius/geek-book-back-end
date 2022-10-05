@@ -6,9 +6,9 @@ import { notFound } from "../utils/throwError"
 async function create(data: IUserCollection, categoryId: number) {
   const { name: category } = await validateCategory(categoryId)
 
-  const { id } = await userCollectionsRepository.create(data)
+  const { id, status } = await userCollectionsRepository.create(data)
 
-  return { id, category }
+  return { id, category, status }
 }
 
 async function validateCategory(categoryId: number) {

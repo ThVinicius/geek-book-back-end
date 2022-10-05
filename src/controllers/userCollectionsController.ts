@@ -6,6 +6,8 @@ import { ICollection } from "../types/collectionTypes"
 async function create(req: Request, res: Response) {
   const { categoryId, name, synopsis, poster } = req.body as ICollection
 
+  const { statusId } = req.body as { statusId: number }
+
   const { lastSeen } = req.body as { lastSeen: number }
 
   const userId: number = res.locals.session
@@ -14,16 +16,25 @@ async function create(req: Request, res: Response) {
 
   const { id: collectionId } = await collectionsService.upsert(data)
 
-  const { id, category } = await userCollectionsService.create(
+  const { id, category, status } = await userCollectionsService.create(
     {
       userId,
       collectionId,
-      lastSeen
+      lastSeen,
+      statusId
     },
     categoryId
   )
 
-  const userCollection = { id, category, name, poster, synopsis, lastSeen }
+  const userCollection = {
+    id,
+    category,
+    name,
+    poster,
+    synopsis,
+    lastSeen,
+    status
+  }
 
   return res.status(201).send(userCollection)
 }

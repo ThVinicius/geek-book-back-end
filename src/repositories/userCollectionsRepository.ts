@@ -1,9 +1,11 @@
 import prisma from "../database/db"
 import { IUserCollection } from "../types/userCollectionsTypes"
-import {} from "@prisma/client"
 
 function create(data: IUserCollection) {
-  return prisma.userCollection.create({ data })
+  return prisma.userCollection.create({
+    data,
+    include: { status: { select: { id: true, name: true } } }
+  })
 }
 
 function getByUserId(userId: number) {

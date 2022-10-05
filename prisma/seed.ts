@@ -1,15 +1,20 @@
-import prisma from '../src/database/db'
+import prisma from "../src/database/db"
 
 async function main() {
   await prisma.category.createMany({
     data: [
-      { name: 'Mangá' },
-      { name: 'Anime' },
-      { name: 'Manhua' },
-      { name: 'Donghua' },
-      { name: 'Novel' },
-      { name: 'Série' }
+      { name: "Mangá" },
+      { name: "Anime" },
+      { name: "Manhua" },
+      { name: "Donghua" },
+      { name: "Novel" },
+      { name: "Série" }
     ],
+    skipDuplicates: true
+  })
+
+  await prisma.status.createMany({
+    data: [{ name: "Ativo" }, { name: "Completo" }],
     skipDuplicates: true
   })
 }

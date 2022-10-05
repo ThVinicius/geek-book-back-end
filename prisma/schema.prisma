@@ -55,14 +55,25 @@ model Collection {
   @@map("collections")
 }
 
+model Status {
+  id             Int              @id @default(autoincrement())
+  name           String           @unique
+  createdAt      DateTime         @default(now()) @db.Timestamptz(6)
+  UserCollection UserCollection[]
+
+  @@map("status")
+}
+
 model UserCollection {
   id           Int        @id @default(autoincrement())
   userId       Int
   collectionId Int
   lastSeen     Int
+  statusId     Int
   createdAt    DateTime   @default(now()) @db.Timestamptz(6)
   user         User       @relation(fields: [userId], references: [id])
   collection   Collection @relation(fields: [collectionId], references: [id])
+  status       Status     @relation(fields: [statusId], references: [id])
 
   @@unique([userId, collectionId])
   @@map("userCollections")
