@@ -1,4 +1,4 @@
-import joi from 'joi'
+import joi from "joi"
 
 const create = joi.object({
   categoryId: joi.number().strict().greater(0).required(),
@@ -14,7 +14,7 @@ const update = joi.object({
 })
 
 const remove = joi.object({
-  collectionId: joi.number().greater(0).required()
+  id: joi.number().greater(0).required()
 })
 
 export default { create, update, remove }

@@ -1,6 +1,6 @@
-import prisma from '../database/db'
-import { IUserCollection } from '../types/userCollectionsTypes'
-import {} from '@prisma/client'
+import prisma from "../database/db"
+import { IUserCollection } from "../types/userCollectionsTypes"
+import {} from "@prisma/client"
 
 function create(data: IUserCollection) {
   return prisma.userCollection.create({ data })
@@ -10,6 +10,7 @@ function getByUserId(userId: number) {
   return prisma.userCollection.findMany({
     where: { userId },
     select: {
+      id: true,
       lastSeen: true,
       collection: {
         select: {
@@ -35,10 +36,8 @@ function updateLastSeen(
   })
 }
 
-async function remove(collectionId: number, userId: number) {
-  await prisma.userCollection.delete({
-    where: { userId_collectionId: { collectionId, userId } }
-  })
+async function remove(id: number) {
+  await prisma.userCollection.delete({ where: { id } })
 }
 
 export default { create, getByUserId, updateLastSeen, remove }

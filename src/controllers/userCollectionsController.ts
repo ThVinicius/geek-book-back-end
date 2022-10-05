@@ -1,7 +1,7 @@
-import { Request, Response } from 'express'
-import userCollectionsService from '../services/userCollectionsService'
-import collectionsService from '../services/collectionsService'
-import { ICollection } from '../types/collectionTypes'
+import { Request, Response } from "express"
+import userCollectionsService from "../services/userCollectionsService"
+import collectionsService from "../services/collectionsService"
+import { ICollection } from "../types/collectionTypes"
 
 async function create(req: Request, res: Response) {
   const { categoryId, name, synopsis, poster } = req.body as ICollection
@@ -54,11 +54,9 @@ async function updateLastSeen(req: Request, res: Response) {
 }
 
 async function remove(req: Request, res: Response) {
-  const userId: number = res.locals.session
+  const id = Number(req.params.id)
 
-  const collectionId = Number(req.params.collectionId)
-
-  await userCollectionsService.remove(collectionId, userId)
+  await userCollectionsService.remove(id)
 
   return res.sendStatus(200)
 }

@@ -1,7 +1,7 @@
-import userCollectionsRepository from '../repositories/userCollectionsRepository'
-import categoriesService from './categoriesService'
-import { IUserCollection } from '../types/userCollectionsTypes'
-import { notFound } from '../utils/throwError'
+import userCollectionsRepository from "../repositories/userCollectionsRepository"
+import categoriesService from "./categoriesService"
+import { IUserCollection } from "../types/userCollectionsTypes"
+import { notFound } from "../utils/throwError"
 
 async function create(data: IUserCollection, categoryId: number) {
   const { name: category } = await validateCategory(categoryId)
@@ -14,7 +14,7 @@ async function create(data: IUserCollection, categoryId: number) {
 async function validateCategory(categoryId: number) {
   const category = await categoriesService.getById(categoryId)
 
-  if (category === null) notFound('Essa categoria não existe')
+  if (category === null) notFound("Essa categoria não existe")
 
   return category!
 }
@@ -35,8 +35,8 @@ function updateLastSeen(
   )
 }
 
-async function remove(collectionId: number, userId: number) {
-  await userCollectionsRepository.remove(collectionId, userId)
+async function remove(id: number) {
+  await userCollectionsRepository.remove(id)
 }
 
 export default { create, getByUserId, updateLastSeen, remove }
