@@ -14,6 +14,7 @@ function getByUserId(userId: number) {
     select: {
       id: true,
       lastSeen: true,
+      status: { select: { id: true, name: true } },
       collection: {
         select: {
           id: true,
