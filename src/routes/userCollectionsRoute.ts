@@ -6,20 +6,31 @@ import userCollectionsController from "../controllers/userCollectionsController"
 
 const route = Router()
 
-route.use(tokenValidate)
-
 route.post(
   "/user-collections",
   schemaValidator(userCollectionSchemas.create),
+  tokenValidate,
   userCollectionsController.create
 )
 
-route.get("/user-collections", userCollectionsController.getByUserId)
+route.get(
+  "/user-collections",
+  tokenValidate,
+  userCollectionsController.getByUserId
+)
 
 route.patch(
-  "/user-collections",
-  schemaValidator(userCollectionSchemas.update),
+  "/user-collections/last-seen",
+  schemaValidator(userCollectionSchemas.updateLastSeen),
+  tokenValidate,
   userCollectionsController.updateLastSeen
+)
+
+route.patch(
+  "/user-collections/status",
+  schemaValidator(userCollectionSchemas.updateStatus),
+  tokenValidate,
+  userCollectionsController.updateStatus
 )
 
 const isParams = true
@@ -27,6 +38,7 @@ const isParams = true
 route.delete(
   "/user-collections/:id",
   schemaValidator(userCollectionSchemas.remove, isParams),
+  tokenValidate,
   userCollectionsController.remove
 )
 

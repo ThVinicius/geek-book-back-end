@@ -39,8 +39,12 @@ function updateLastSeen(
   })
 }
 
+function updateStatus(id: number, statusId: number) {
+  return prisma.userCollection.update({ where: { id }, data: { statusId } })
+}
+
 async function remove(id: number) {
   await prisma.userCollection.delete({ where: { id } })
 }
 
-export default { create, getByUserId, updateLastSeen, remove }
+export default { create, getByUserId, updateLastSeen, updateStatus, remove }

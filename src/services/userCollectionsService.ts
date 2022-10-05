@@ -35,8 +35,12 @@ function updateLastSeen(
   )
 }
 
+function updateStatus(id: number, statusId: number) {
+  return userCollectionsRepository.updateStatus(id, statusId)
+}
+
 async function remove(id: number) {
   await userCollectionsRepository.remove(id)
 }
 
-export default { create, getByUserId, updateLastSeen, remove }
+export default { create, getByUserId, updateLastSeen, updateStatus, remove }

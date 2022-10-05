@@ -9,13 +9,18 @@ const create = joi.object({
   statusId: joi.number().strict().greater(0).required()
 })
 
-const update = joi.object({
+const updateLastSeen = joi.object({
   collectionId: joi.number().strict().greater(0).required(),
   lastSeen: joi.number().strict().greater(-1).required()
+})
+
+const updateStatus = joi.object({
+  id: joi.number().strict().greater(0).required(),
+  statusId: joi.number().strict().greater(0).required()
 })
 
 const remove = joi.object({
   id: joi.number().greater(0).required()
 })
 
-export default { create, update, remove }
+export default { create, updateLastSeen, updateStatus, remove }

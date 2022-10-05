@@ -64,6 +64,14 @@ async function updateLastSeen(req: Request, res: Response) {
   return res.status(200).send(collection)
 }
 
+async function updateStatus(req: Request, res: Response) {
+  const { id, statusId } = req.body as { id: number; statusId: number }
+
+  await userCollectionsService.updateStatus(id, statusId)
+
+  return res.sendStatus(200)
+}
+
 async function remove(req: Request, res: Response) {
   const id = Number(req.params.id)
 
@@ -72,4 +80,4 @@ async function remove(req: Request, res: Response) {
   return res.sendStatus(200)
 }
 
-export default { create, getByUserId, updateLastSeen, remove }
+export default { create, getByUserId, updateLastSeen, updateStatus, remove }
