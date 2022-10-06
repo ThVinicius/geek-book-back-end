@@ -8,9 +8,9 @@ function create(data: IUserCollection) {
   })
 }
 
-function getByUserId(userId: number) {
+function getByUserId(userId: number, statusId: number) {
   return prisma.userCollection.findMany({
-    where: { userId },
+    where: { userId, statusId },
     select: {
       id: true,
       lastSeen: true,

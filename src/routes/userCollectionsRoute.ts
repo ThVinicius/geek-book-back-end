@@ -14,7 +14,7 @@ route.post(
 )
 
 route.get(
-  "/user-collections",
+  "/user-collections/:statusId",
   tokenValidate,
   userCollectionsController.getByUserId
 )

@@ -39,10 +39,12 @@ async function create(req: Request, res: Response) {
   return res.status(201).send(userCollection)
 }
 
-async function getByUserId(_: Request, res: Response) {
+async function getByUserId(req: Request, res: Response) {
   const userId: number = res.locals.session
 
-  const collections = await userCollectionsService.getByUserId(userId)
+  const statusId = Number(req.params.statusId)
+
+  const collections = await userCollectionsService.getByUserId(userId, statusId)
 
   return res.status(200).send(collections)
 }
