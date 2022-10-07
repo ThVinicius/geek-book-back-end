@@ -19,6 +19,7 @@ model User {
   createdAt   DateTime         @default(now()) @db.Timestamptz(6)
   session     Session?
   userHistory UserCollection[]
+  share       Share?
 
   @@map("users")
 }
@@ -77,4 +78,13 @@ model UserCollection {
 
   @@unique([userId, collectionId])
   @@map("userCollections")
+}
+
+model Share {
+  id       Int    @id @default(autoincrement())
+  userId   Int    @unique
+  shortUrl String @unique @db.VarChar(9)
+  user     User   @relation(fields: [userId], references: [id])
+
+  @@map("shares")
 }
