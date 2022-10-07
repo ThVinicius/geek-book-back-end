@@ -44,7 +44,9 @@ async function getByUserId(req: Request, res: Response) {
 
   const statusId = Number(req.params.statusId)
 
-  const collections = await userCollectionsService.getByUserId(userId, statusId)
+  const where = { userId, statusId }
+
+  const collections = await userCollectionsService.getByUserId(where)
 
   return res.status(200).send(collections)
 }

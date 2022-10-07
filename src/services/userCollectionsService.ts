@@ -19,8 +19,8 @@ async function validateCategory(categoryId: number) {
   return category!
 }
 
-function getByUserId(userId: number, statusId: number) {
-  return userCollectionsRepository.getByUserId(userId, statusId)
+function getByUserId(where: { userId: number; statusId?: number }) {
+  return userCollectionsRepository.getByUserId(where)
 }
 
 function updateLastSeen(
