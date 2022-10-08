@@ -9,7 +9,14 @@ function createLink(userId: number, shortUrl: string) {
 }
 
 function get(shortUrl: string) {
-  return prisma.share.findUnique({ where: { shortUrl } })
+  return prisma.share.findUnique({
+    where: { shortUrl },
+    include: { user: { select: { nickname: true, avatar: true } } }
+  })
 }
 
-export default { createLink, get }
+async function remove(shortUrl: string) {
+  await prisma.share.delete({ where: { shortUrl } })
+}
+
+export default { createLink, get, remove }

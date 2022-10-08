@@ -3,6 +3,7 @@ import sharesRepository from "../repositories/sharesRepository"
 import userCollectionsService from "./userCollectionsService"
 import { notAcceptable, notFound } from "../utils/throwError"
 import { Share } from "@prisma/client"
+import { IUserCollectionReturn } from "../types/userCollectionsTypes"
 
 async function createLink(userId: number) {
   await validateUserCollection(userId)
@@ -33,13 +34,36 @@ async function getCollection(shortUrl: string) {
 
   const where = { userId: share!.userId }
 
-  const collections = await userCollectionsService.getByUserId(where)
+  const userCollections = await userCollectionsService.getByUserId(where)
 
-  return collections
+  await userCollectionValidate(userCollections, shortUrl)
+
+  return {
+    userCollections,
+    nickname: share?.user.nickname,
+    avatar: share?.user.avatar
+  }
+}
+
+async function userCollectionValidate(
+  userCollection: IUserCollectionReturn,
+  shortUrl: string
+) {
+  if (userCollection.length === 0) {
+    await remove(shortUrl)
+
+    const errorMessage = "Link não encontrado"
+
+    notFound(errorMessage)
+  }
 }
 
 function validateShare(share: Share | null) {
   if (share === null) notFound("Link não encontrado")
+}
+
+async function remove(shortUrl: string) {
+  await sharesRepository.remove(shortUrl)
 }
 
 export default { createLink, getCollection }
