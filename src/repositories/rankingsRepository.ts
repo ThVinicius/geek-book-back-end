@@ -5,4 +5,8 @@ function create(data: IRanking) {
   return prisma.ranking.create({ data })
 }
 
-export default { create }
+async function remove(id: number) {
+  await prisma.ranking.delete({ where: { id } })
+}
+
+export default { create, remove }

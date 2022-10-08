@@ -16,4 +16,12 @@ async function create(req: Request, res: Response) {
   return res.status(201).send(ranking)
 }
 
-export default { create }
+async function remove(req: Request, res: Response) {
+  const id = Number(req.params.id)
+
+  await rankingsService.remove(id)
+
+  return res.sendStatus(200)
+}
+
+export default { create, remove }

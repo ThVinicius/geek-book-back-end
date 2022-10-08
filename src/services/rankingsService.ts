@@ -5,4 +5,8 @@ function create(data: IRanking) {
   return rankingsRepository.create(data)
 }
 
-export default { create }
+async function remove(id: number) {
+  rankingsRepository.remove(id)
+}
+
+export default { create, remove }

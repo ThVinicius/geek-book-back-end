@@ -13,4 +13,13 @@ route.post(
   rankingsController.create
 )
 
+const isParams = true
+
+route.delete(
+  "/rankings/:id",
+  schemaValidator(rankingsSchema.remove, isParams),
+  tokenValidate,
+  rankingsController.remove
+)
+
 export default route
