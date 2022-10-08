@@ -99,6 +99,6 @@ model Ranking {
   user             User           @relation(fields: [userId], references: [id])
   userCollection   UserCollection @relation(fields: [userCollectionId], references: [id])
 
-  @@unique([userId, userCollectionId, position])
+  @@unique([userId, userCollectionId])
   @@map("rankings")
 }

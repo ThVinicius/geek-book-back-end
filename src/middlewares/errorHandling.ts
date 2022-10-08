@@ -41,6 +41,7 @@ export const errorHandling: ErrorRequestHandler = (error, req, res, next) => {
 
     case "P2002":
     case "Conflit":
+      console.log(error)
       const message = "Unique constraint failed on the fields:"
 
       return res.status(409).send(errorMessage(message, error.meta.target))
