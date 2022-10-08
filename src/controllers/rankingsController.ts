@@ -1,5 +1,6 @@
 import { Request, Response } from "express"
 import rankingsService from "../services/rankingsService"
+import { IBodyRanking } from "../types/rankingsTypes"
 
 async function create(req: Request, res: Response) {
   const { userCollectionId, position } = req.body as {
@@ -24,4 +25,12 @@ async function remove(req: Request, res: Response) {
   return res.sendStatus(200)
 }
 
-export default { create, remove }
+async function updateUserCollection(req: Request, res: Response) {
+  const { id, ...data }: IBodyRanking = req.body
+
+  const ranking = await rankingsService.updateUserCollection(id, data)
+
+  return res.status(200).send(ranking)
+}
+
+export default { create, remove, updateUserCollection }

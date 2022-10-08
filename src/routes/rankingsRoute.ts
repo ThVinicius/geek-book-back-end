@@ -22,4 +22,11 @@ route.delete(
   rankingsController.remove
 )
 
+route.patch(
+  "/rankings",
+  schemaValidator(rankingsSchema.update),
+  tokenValidate,
+  rankingsController.updateUserCollection
+)
+
 export default route
