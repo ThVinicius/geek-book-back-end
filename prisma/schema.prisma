@@ -20,6 +20,7 @@ model User {
   session     Session?
   userHistory UserCollection[]
   share       Share?
+  Ranking     Ranking[]
 
   @@map("users")
 }
@@ -75,6 +76,7 @@ model UserCollection {
   user         User       @relation(fields: [userId], references: [id])
   collection   Collection @relation(fields: [collectionId], references: [id])
   status       Status     @relation(fields: [statusId], references: [id])
+  Ranking      Ranking[]
 
   @@unique([userId, collectionId])
   @@map("userCollections")
@@ -87,4 +89,16 @@ model Share {
   user     User   @relation(fields: [userId], references: [id])
 
   @@map("shares")
+}
+
+model Ranking {
+  id               Int            @id @default(autoincrement())
+  userId           Int
+  userCollectionId Int
+  position         Int            @db.Integer
+  user             User           @relation(fields: [userId], references: [id])
+  userCollection   UserCollection @relation(fields: [userCollectionId], references: [id])
+
+  @@unique([userId, userCollectionId, position])
+  @@map("rankings")
 }
