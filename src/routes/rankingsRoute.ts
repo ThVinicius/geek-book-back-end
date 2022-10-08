@@ -29,4 +29,6 @@ route.patch(
   rankingsController.updateUserCollection
 )
 
+route.get("/rankings", tokenValidate, rankingsController.get)
+
 export default route

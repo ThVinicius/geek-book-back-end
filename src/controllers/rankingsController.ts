@@ -33,4 +33,12 @@ async function updateUserCollection(req: Request, res: Response) {
   return res.status(200).send(ranking)
 }
 
-export default { create, remove, updateUserCollection }
+async function get(req: Request, res: Response) {
+  const userId: number = res.locals.session
+
+  const ranking = await rankingsService.makeRanking(userId)
+
+  return res.status(200).send(ranking)
+}
+
+export default { create, remove, updateUserCollection, get }
