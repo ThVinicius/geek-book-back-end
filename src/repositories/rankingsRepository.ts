@@ -15,8 +15,9 @@ function updateUserCollection(id: number, data: IUpdateRanking) {
 
 async function getAllByUserId(userId: number) {
   return await prisma.$queryRaw<IGetRanking>`
-    SELECT r.id AS "rankingId", r.position, uc.id AS "userCollectionId", c.name, 
-      poster, synopsis, ca.name AS category, s.name AS status, uc."lastSeen"
+    SELECT r.id AS "rankingId", position, uc.id AS "userCollectionId", 
+      c.name, poster, synopsis, ca.name AS category, s.name AS status, 
+      "lastSeen"
     FROM rankings r
     JOIN "userCollections" uc ON uc.id = r."userCollectionId"
     JOIN collections c ON c.id = uc."collectionId"

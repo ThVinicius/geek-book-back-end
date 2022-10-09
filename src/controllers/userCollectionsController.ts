@@ -42,9 +42,15 @@ async function create(req: Request, res: Response) {
 async function getByUserId(req: Request, res: Response) {
   const userId: number = res.locals.session
 
-  const statusId = Number(req.params.statusId)
+  const { statusId } = req.query
 
-  const where = { userId, statusId }
+  let where
+
+  if (statusId === undefined) {
+    where = { userId }
+  } else {
+    where = { userId, statusId: Number(statusId) }
+  }
 
   const collections = await userCollectionsService.getByUserId(where)
 
