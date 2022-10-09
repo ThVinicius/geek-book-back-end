@@ -4,6 +4,7 @@ import userCollectionsService from "./userCollectionsService"
 import { notAcceptable, notFound } from "../utils/throwError"
 import { Share } from "@prisma/client"
 import { IUserCollectionReturn } from "../types/userCollectionsTypes"
+import rankingsService from "./rankingsService"
 
 async function createLink(userId: number) {
   await validateUserCollection(userId)
@@ -27,6 +28,10 @@ async function validateUserCollection(userId: number) {
   return userCollection
 }
 
+async function getRanking(userId: number) {
+  return await rankingsService.makeRanking(userId)
+}
+
 async function getCollection(shortUrl: string) {
   const share = await sharesRepository.get(shortUrl)
 
@@ -38,8 +43,11 @@ async function getCollection(shortUrl: string) {
 
   await userCollectionValidate(userCollections, shortUrl)
 
+  const ranking = await getRanking(where.userId)
+
   return {
     userCollections,
+    ranking,
     nickname: share?.user.nickname,
     avatar: share?.user.avatar
   }
