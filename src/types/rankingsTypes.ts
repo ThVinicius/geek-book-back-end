@@ -17,3 +17,13 @@ export type IGetRanking = {
   status: string
   lastSeen: number
 }[]
+
+export type IGetUserCollection = {
+  userCollectionId: number
+  name: string
+  poster: string | null
+  synopsis: string | null
+  category: string
+  status: string
+  lastSeen: number
+}[]

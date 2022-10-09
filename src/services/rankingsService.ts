@@ -51,4 +51,14 @@ function buildObject(position: number) {
   }
 }
 
-export default { create, remove, updateUserCollection, makeRanking }
+function getMissingUserCollection(userId: number) {
+  return rankingsRepository.getMissingUserCollection(userId)
+}
+
+export default {
+  create,
+  remove,
+  updateUserCollection,
+  makeRanking,
+  getMissingUserCollection
+}

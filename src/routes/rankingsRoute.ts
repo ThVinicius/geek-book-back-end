@@ -31,4 +31,10 @@ route.patch(
 
 route.get("/rankings", tokenValidate, rankingsController.get)
 
+route.get(
+  "/rankings/user-collections",
+  tokenValidate,
+  rankingsController.getMissingUserCollection
+)
+
 export default route
