@@ -30,7 +30,7 @@ model Session {
   userId    Int      @unique
   token     String
   createdAt DateTime @default(now()) @db.Timestamptz(6)
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("sessions")
 }
@@ -82,6 +82,18 @@ model UserCollection {
   @@map("userCollections")
 }
 
+model Ranking {
+  id               Int            @id @default(autoincrement())
+  userId           Int
+  userCollectionId Int
+  position         Int            @db.Integer
+  user             User           @relation(fields: [userId], references: [id])
+  userCollection   UserCollection @relation(fields: [userCollectionId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, userCollectionId])
+  @@map("rankings")
+}
+
 model Share {
   id       Int    @id @default(autoincrement())
   userId   Int    @unique
@@ -89,16 +101,4 @@ model Share {
   user     User   @relation(fields: [userId], references: [id])
 
   @@map("shares")
-}
-
-model Ranking {
-  id               Int            @id @default(autoincrement())
-  userId           Int
-  userCollectionId Int
-  position         Int            @db.Integer
-  user             User           @relation(fields: [userId], references: [id])
-  userCollection   UserCollection @relation(fields: [userCollectionId], references: [id])
-
-  @@unique([userId, userCollectionId])
-  @@map("rankings")
 }

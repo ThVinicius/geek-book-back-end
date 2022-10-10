@@ -19,5 +19,5 @@ export function upgradeRequired(message: string) {
 }
 
 export function notAcceptable(message: string) {
-  throw { name: "Not Acceptable", message }
+  throw { code: "Not Acceptable", message }
 }
