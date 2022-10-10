@@ -29,6 +29,9 @@ export const errorHandling: ErrorRequestHandler = (error, req, res, next) => {
     case "Not Found":
       return res.status(404).send(error.message)
 
+    case "Not Acceptable":
+      return res.status(406).send(error.message)
+
     case "P2003":
       const field = error.meta.field_name.includes("categoryId")
 
