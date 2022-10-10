@@ -5,8 +5,6 @@ async function main() {
     data: [
       { name: "Mangá" },
       { name: "Anime" },
-      { name: "Manhua" },
-      { name: "Donghua" },
       { name: "Novel" },
       { name: "Série" }
     ],
