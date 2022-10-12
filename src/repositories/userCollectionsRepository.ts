@@ -1,11 +1,36 @@
 import prisma from "../database/db"
+import { Prisma } from "@prisma/client"
 import { IUserCollection } from "../types/userCollectionsTypes"
+import handlePrismaError from "../utils/handlePrismaError"
 
-function create(data: IUserCollection) {
-  return prisma.userCollection.create({
-    data,
-    include: { status: { select: { id: true, name: true } } }
-  })
+async function create(data: IUserCollection) {
+  try {
+    return await prisma.userCollection.create({
+      data,
+      include: { status: { select: { id: true, name: true } } }
+    })
+  } catch (error) {
+    const e = error as Prisma.PrismaClientKnownRequestError
+
+    switch (e.code) {
+      case "P2002":
+        const messageError = "Não é possivel cadastrar a mesma obra duas vezes"
+
+        handlePrismaError(e, messageError)
+
+        break
+
+      case "P2003":
+        const message = "Esse statusId não existe"
+
+        handlePrismaError(e, message)
+
+        break
+
+      default:
+        break
+    }
+  }
 }
 
 function getByUserId(where: { userId: number; statusId?: number }) {

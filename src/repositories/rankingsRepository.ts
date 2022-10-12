@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client"
 import prisma from "../database/db"
 import {
   IRanking,
@@ -5,9 +6,31 @@ import {
   IGetRanking,
   IGetUserCollection
 } from "../types/rankingsTypes"
+import handlePrismaError from "../utils/handlePrismaError"
 
-function create(data: IRanking) {
-  return prisma.ranking.create({ data })
+async function create(data: IRanking) {
+  try {
+    return await prisma.ranking.create({ data })
+  } catch (error) {
+    const e = error as Prisma.PrismaClientKnownRequestError
+
+    switch (e.code) {
+      case "P2002":
+        const messageError = "Essa obra já está ranqueada!"
+
+        handlePrismaError(e, messageError)
+        break
+
+      case "P2003":
+        const message = "Esse userCollectionId não existe!"
+
+        handlePrismaError(e, message)
+        break
+
+      default:
+        break
+    }
+  }
 }
 
 async function remove(id: number) {

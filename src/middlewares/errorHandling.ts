@@ -1,5 +1,4 @@
 import { ErrorRequestHandler } from "express"
-import errorMessage from "../utils/errorMessage"
 
 export const errorHandling: ErrorRequestHandler = (error, req, res, next) => {
   if (error.name !== undefined && error.name.length >= 16) {
@@ -42,12 +41,8 @@ export const errorHandling: ErrorRequestHandler = (error, req, res, next) => {
 
       return res.status(404).send(msg)
 
-    case "P2002":
     case "Conflit":
-      console.log(error)
-      const message = "Unique constraint failed on the fields:"
-
-      return res.status(409).send(errorMessage(message, error.meta.target))
+      return res.status(409).send(error.message)
 
     default:
       console.log(error)

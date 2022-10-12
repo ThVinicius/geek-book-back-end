@@ -1,8 +1,8 @@
 import rankingsRepository from "../repositories/rankingsRepository"
 import { IRanking, IUpdateRanking } from "../types/rankingsTypes"
 
-function create(data: IRanking) {
-  return rankingsRepository.create(data)
+async function create(data: IRanking) {
+  return await rankingsRepository.create(data)
 }
 
 async function remove(id: number) {
