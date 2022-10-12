@@ -70,7 +70,7 @@ model UserCollection {
   id           Int        @id @default(autoincrement())
   userId       Int
   collectionId Int
-  lastSeen     Int
+  lastSeen     Float
   statusId     Int
   createdAt    DateTime   @default(now()) @db.Timestamptz(6)
   user         User       @relation(fields: [userId], references: [id])
