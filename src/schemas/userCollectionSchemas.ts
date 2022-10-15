@@ -9,10 +9,16 @@ const create = joi.object({
   statusId: joi.number().integer().strict().greater(0).required()
 })
 
-const updateLastSeen = joi.object({
-  collectionId: joi.number().strict().greater(0).required(),
-  lastSeen: joi.number().strict().greater(-1).required()
-})
+const updateLastSeen = joi
+  .object({
+    collectionId: joi.number().strict().greater(0).required(),
+    lastSeen: joi.number().strict().greater(-1),
+    increment: joi
+      .number()
+      .strict()
+      .valid(...[-1, 1])
+  })
+  .xor("lastSeen", "increment")
 
 const updateStatus = joi.object({
   id: joi.number().integer().strict().greater(0).required(),

@@ -53,15 +53,31 @@ function getByUserId(where: { userId: number; statusId?: number }) {
   })
 }
 
-function updateLastSeen(
+async function updateLastSeen(
   collectionId: number,
   userId: number,
-  lastSeen: number
+  lastSeen: { lastSeen: number } | { lastSeen: { increment: -1 | 1 } }
 ) {
-  return prisma.userCollection.update({
-    where: { userId_collectionId: { userId, collectionId } },
-    data: { lastSeen }
-  })
+  try {
+    return await prisma.userCollection.update({
+      where: { userId_collectionId: { userId, collectionId } },
+      data: lastSeen
+    })
+  } catch (error) {
+    const e = error as Prisma.PrismaClientKnownRequestError
+
+    switch (e.code) {
+      case "P2025":
+        const messageError = "Registro não encontrado!"
+
+        handlePrismaError(e, messageError)
+
+        break
+
+      default:
+        break
+    }
+  }
 }
 
 function updateStatus(id: number, statusId: number) {

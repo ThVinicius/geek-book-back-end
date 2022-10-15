@@ -1,8 +1,6 @@
 import { Prisma } from "@prisma/client"
 import { conflit, notFound } from "./throwError"
 
-type IType = { conflit: string }
-
 export default function handlePrismaError(
   error: Prisma.PrismaClientKnownRequestError,
   messageError: string
@@ -13,6 +11,7 @@ export default function handlePrismaError(
       break
 
     case "P2003":
+    case "P2025":
       notFound(messageError)
       break
 

@@ -23,15 +23,15 @@ function getByUserId(where: { userId: number; statusId?: number }) {
   return userCollectionsRepository.getByUserId(where)
 }
 
-function updateLastSeen(
+async function updateLastSeen(
   collectionId: number,
   userId: number,
-  lastSeen: number
+  data: { lastSeen: number } | { lastSeen: { increment: -1 | 1 } }
 ) {
-  return userCollectionsRepository.updateLastSeen(
+  return await userCollectionsRepository.updateLastSeen(
     collectionId,
     userId,
-    lastSeen
+    data
   )
 }
 
