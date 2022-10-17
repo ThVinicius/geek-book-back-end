@@ -35,8 +35,8 @@ async function updateLastSeen(
   )
 }
 
-function updateStatus(id: number, statusId: number) {
-  return userCollectionsRepository.updateStatus(id, statusId)
+async function updateStatus(id: number, statusId: number) {
+  return await userCollectionsRepository.updateStatus(id, statusId)
 }
 
 async function remove(id: number) {

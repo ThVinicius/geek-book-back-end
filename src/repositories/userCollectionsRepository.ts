@@ -80,12 +80,47 @@ async function updateLastSeen(
   }
 }
 
-function updateStatus(id: number, statusId: number) {
-  return prisma.userCollection.update({ where: { id }, data: { statusId } })
+async function updateStatus(id: number, statusId: number) {
+  try {
+    return await prisma.userCollection.update({
+      where: { id },
+      data: { statusId }
+    })
+  } catch (error) {
+    const e = error as Prisma.PrismaClientKnownRequestError
+
+    switch (e.code) {
+      case "P2025":
+        const messageError = "Registro não encontrado!"
+
+        handlePrismaError(e, messageError)
+
+        break
+
+      default:
+        break
+    }
+  }
 }
 
 async function remove(id: number) {
-  await prisma.userCollection.delete({ where: { id } })
+  try {
+    await prisma.userCollection.delete({ where: { id } })
+  } catch (error) {
+    const e = error as Prisma.PrismaClientKnownRequestError
+
+    switch (e.code) {
+      case "P2025":
+        const messageError = "Registro não encontrado!"
+
+        handlePrismaError(e, messageError)
+
+        break
+
+      default:
+        break
+    }
+  }
 }
 
 export default { create, getByUserId, updateLastSeen, updateStatus, remove }
