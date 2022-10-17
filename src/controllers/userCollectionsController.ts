@@ -49,7 +49,13 @@ async function getByUserId(req: Request, res: Response) {
   if (statusId === undefined) {
     where = { userId }
   } else {
-    where = { userId, statusId: Number(statusId) }
+    const aux = Number(statusId)
+
+    if (isNaN(aux) || aux < 0) {
+      return res.status(400).send("statusId deve ser um número maior que 0")
+    }
+
+    where = { userId, statusId: aux }
   }
 
   const collections = await userCollectionsService.getByUserId(where)
