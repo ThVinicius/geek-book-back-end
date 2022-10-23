@@ -46,7 +46,7 @@ model Category {
 
 model Collection {
   id             Int              @id @default(autoincrement())
-  name           String           @unique
+  name           String
   categoryId     Int
   poster         String?
   synopsis       String?
@@ -54,6 +54,7 @@ model Collection {
   category       Category         @relation(fields: [categoryId], references: [id])
   userCollection UserCollection[]
 
+  @@unique([name, categoryId])
   @@map("collections")
 }
 
