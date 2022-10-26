@@ -49,7 +49,13 @@ async function getByUserId(req: Request, res: Response) {
   if (statusId === undefined) {
     where = { userId }
   } else {
-    where = { userId, statusId: Number(statusId) }
+    const aux = Number(statusId)
+
+    if (isNaN(aux) || aux < 0) {
+      return res.status(400).send("statusId deve ser um número maior que 0")
+    }
+
+    where = { userId, statusId: aux }
   }
 
   const collections = await userCollectionsService.getByUserId(where)
@@ -60,15 +66,24 @@ async function getByUserId(req: Request, res: Response) {
 async function updateLastSeen(req: Request, res: Response) {
   const userId: number = res.locals.session
 
-  const { collectionId, lastSeen } = req.body as {
+  const { collectionId, lastSeen, increment } = req.body as {
     collectionId: number
     lastSeen: number
+    increment: -1 | 1 | undefined
+  }
+
+  let data
+
+  if (increment !== undefined) {
+    data = { lastSeen: { increment } }
+  } else {
+    data = { lastSeen }
   }
 
   const collection = await userCollectionsService.updateLastSeen(
     collectionId,
     userId,
-    lastSeen
+    data
   )
 
   return res.status(200).send(collection)

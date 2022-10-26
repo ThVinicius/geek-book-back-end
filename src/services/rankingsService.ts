@@ -1,16 +1,16 @@
 import rankingsRepository from "../repositories/rankingsRepository"
-import { IRanking, IUpdateRanking } from "../types/rankingsTypes"
+import { IRanking } from "../types/rankingsTypes"
 
-function create(data: IRanking) {
-  return rankingsRepository.create(data)
+async function create(data: IRanking) {
+  return await rankingsRepository.create(data)
 }
 
 async function remove(id: number) {
   rankingsRepository.remove(id)
 }
 
-function updateUserCollection(id: number, data: IUpdateRanking) {
-  return rankingsRepository.updateUserCollection(id, data)
+async function update(id: number, userCollectionId: number) {
+  return await rankingsRepository.update(id, userCollectionId)
 }
 
 async function getAllByUserId(userId: number) {
@@ -58,7 +58,7 @@ function getMissingUserCollection(userId: number) {
 export default {
   create,
   remove,
-  updateUserCollection,
+  update,
   makeRanking,
   getMissingUserCollection
 }

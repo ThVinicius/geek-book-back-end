@@ -46,7 +46,7 @@ model Category {
 
 model Collection {
   id             Int              @id @default(autoincrement())
-  name           String           @unique
+  name           String
   categoryId     Int
   poster         String?
   synopsis       String?
@@ -54,6 +54,7 @@ model Collection {
   category       Category         @relation(fields: [categoryId], references: [id])
   userCollection UserCollection[]
 
+  @@unique([name, categoryId])
   @@map("collections")
 }
 
@@ -70,7 +71,7 @@ model UserCollection {
   id           Int        @id @default(autoincrement())
   userId       Int
   collectionId Int
-  lastSeen     Int
+  lastSeen     Float
   statusId     Int
   createdAt    DateTime   @default(now()) @db.Timestamptz(6)
   user         User       @relation(fields: [userId], references: [id])

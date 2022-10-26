@@ -1,21 +1,92 @@
+import { Prisma } from "@prisma/client"
 import prisma from "../database/db"
 import {
   IRanking,
-  IUpdateRanking,
   IGetRanking,
   IGetUserCollection
 } from "../types/rankingsTypes"
+import handlePrismaError from "../utils/handlePrismaError"
 
-function create(data: IRanking) {
-  return prisma.ranking.create({ data })
+async function create(data: IRanking) {
+  try {
+    return await prisma.ranking.create({ data })
+  } catch (error) {
+    const e = error as Prisma.PrismaClientKnownRequestError
+
+    switch (e.code) {
+      case "P2002":
+        const messageError = "Essa obra já está ranqueada!"
+
+        handlePrismaError(e, messageError)
+        break
+
+      case "P2003":
+        const message = "Esse userCollectionId não existe!"
+
+        handlePrismaError(e, message)
+        break
+
+      default:
+        break
+    }
+  }
 }
 
 async function remove(id: number) {
-  await prisma.ranking.delete({ where: { id } })
+  try {
+    await prisma.ranking.delete({ where: { id } })
+  } catch (error) {
+    const e = error as Prisma.PrismaClientKnownRequestError
+
+    switch (e.code) {
+      case "P2025":
+        const messageError = "Registro não encontrado!"
+
+        handlePrismaError(e, messageError)
+
+        break
+
+      default:
+        break
+    }
+  }
 }
 
-function updateUserCollection(id: number, data: IUpdateRanking) {
-  return prisma.ranking.update({ where: { id }, data })
+async function update(id: number, userCollectionId: number) {
+  try {
+    return await prisma.ranking.update({
+      where: { id },
+      data: { userCollectionId }
+    })
+  } catch (error) {
+    const e = error as Prisma.PrismaClientKnownRequestError
+
+    switch (e.code) {
+      case "P2002":
+        const msg = "Não é possivel ranquear a obra mais de uma vez!"
+
+        handlePrismaError(e, msg)
+        break
+
+      case "P2003":
+        const message = "Esse userCollectionId não existe!"
+
+        handlePrismaError(e, message)
+        break
+
+      case "P2025":
+        const messageError = "Registro não encontrado!"
+
+        handlePrismaError(e, messageError)
+
+        break
+
+      default:
+        console.log(error)
+
+        break
+    }
+  }
 }
 
 async function getAllByUserId(userId: number) {
@@ -49,7 +120,7 @@ function getMissingUserCollection(userId: number) {
 export default {
   create,
   remove,
-  updateUserCollection,
+  update,
   getAllByUserId,
   getMissingUserCollection
 }

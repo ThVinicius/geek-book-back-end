@@ -1,11 +1,36 @@
 import prisma from "../database/db"
+import { Prisma } from "@prisma/client"
 import { IUserCollection } from "../types/userCollectionsTypes"
+import handlePrismaError from "../utils/handlePrismaError"
 
-function create(data: IUserCollection) {
-  return prisma.userCollection.create({
-    data,
-    include: { status: { select: { id: true, name: true } } }
-  })
+async function create(data: IUserCollection) {
+  try {
+    return await prisma.userCollection.create({
+      data,
+      include: { status: { select: { id: true, name: true } } }
+    })
+  } catch (error) {
+    const e = error as Prisma.PrismaClientKnownRequestError
+
+    switch (e.code) {
+      case "P2002":
+        const messageError = "Não é possivel cadastrar a mesma obra duas vezes"
+
+        handlePrismaError(e, messageError)
+
+        break
+
+      case "P2003":
+        const message = "Esse statusId não existe"
+
+        handlePrismaError(e, message)
+
+        break
+
+      default:
+        break
+    }
+  }
 }
 
 function getByUserId(where: { userId: number; statusId?: number }) {
@@ -28,23 +53,74 @@ function getByUserId(where: { userId: number; statusId?: number }) {
   })
 }
 
-function updateLastSeen(
+async function updateLastSeen(
   collectionId: number,
   userId: number,
-  lastSeen: number
+  lastSeen: { lastSeen: number } | { lastSeen: { increment: -1 | 1 } }
 ) {
-  return prisma.userCollection.update({
-    where: { userId_collectionId: { userId, collectionId } },
-    data: { lastSeen }
-  })
+  try {
+    return await prisma.userCollection.update({
+      where: { userId_collectionId: { userId, collectionId } },
+      data: lastSeen
+    })
+  } catch (error) {
+    const e = error as Prisma.PrismaClientKnownRequestError
+
+    switch (e.code) {
+      case "P2025":
+        const messageError = "Registro não encontrado!"
+
+        handlePrismaError(e, messageError)
+
+        break
+
+      default:
+        break
+    }
+  }
 }
 
-function updateStatus(id: number, statusId: number) {
-  return prisma.userCollection.update({ where: { id }, data: { statusId } })
+async function updateStatus(id: number, statusId: number) {
+  try {
+    return await prisma.userCollection.update({
+      where: { id },
+      data: { statusId }
+    })
+  } catch (error) {
+    const e = error as Prisma.PrismaClientKnownRequestError
+
+    switch (e.code) {
+      case "P2025":
+        const messageError = "Registro não encontrado!"
+
+        handlePrismaError(e, messageError)
+
+        break
+
+      default:
+        break
+    }
+  }
 }
 
 async function remove(id: number) {
-  await prisma.userCollection.delete({ where: { id } })
+  try {
+    await prisma.userCollection.delete({ where: { id } })
+  } catch (error) {
+    const e = error as Prisma.PrismaClientKnownRequestError
+
+    switch (e.code) {
+      case "P2025":
+        const messageError = "Registro não encontrado!"
+
+        handlePrismaError(e, messageError)
+
+        break
+
+      default:
+        break
+    }
+  }
 }
 
 export default { create, getByUserId, updateLastSeen, updateStatus, remove }

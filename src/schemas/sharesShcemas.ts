@@ -1,7 +1,7 @@
 import joi from "joi"
 
 const get = joi.object({
-  categoryId: joi.number().integer().greater(0).required()
+  shortUrl: joi.string().trim().length(9).required()
 })
 
 export default { get }

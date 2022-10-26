@@ -6,9 +6,9 @@ import { notFound } from "../utils/throwError"
 async function create(data: IUserCollection, categoryId: number) {
   const { name: category } = await validateCategory(categoryId)
 
-  const { id, status } = await userCollectionsRepository.create(data)
+  const userCollection = await userCollectionsRepository.create(data)
 
-  return { id, category, status }
+  return { id: userCollection!.id, category, status: userCollection!.status }
 }
 
 async function validateCategory(categoryId: number) {
@@ -23,20 +23,20 @@ function getByUserId(where: { userId: number; statusId?: number }) {
   return userCollectionsRepository.getByUserId(where)
 }
 
-function updateLastSeen(
+async function updateLastSeen(
   collectionId: number,
   userId: number,
-  lastSeen: number
+  data: { lastSeen: number } | { lastSeen: { increment: -1 | 1 } }
 ) {
-  return userCollectionsRepository.updateLastSeen(
+  return await userCollectionsRepository.updateLastSeen(
     collectionId,
     userId,
-    lastSeen
+    data
   )
 }
 
-function updateStatus(id: number, statusId: number) {
-  return userCollectionsRepository.updateStatus(id, statusId)
+async function updateStatus(id: number, statusId: number) {
+  return await userCollectionsRepository.updateStatus(id, statusId)
 }
 
 async function remove(id: number) {
