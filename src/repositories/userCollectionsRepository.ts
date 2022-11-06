@@ -104,6 +104,13 @@ async function updateStatus(id: number, statusId: number) {
   }
 }
 
+function updatePublic(id: number, publicValue: boolean) {
+  return prisma.userCollection.update({
+    where: { id },
+    data: { public: publicValue }
+  })
+}
+
 async function remove(id: number) {
   try {
     await prisma.userCollection.delete({ where: { id } })
@@ -124,4 +131,11 @@ async function remove(id: number) {
   }
 }
 
-export default { create, getByUserId, updateLastSeen, updateStatus, remove }
+export default {
+  create,
+  getByUserId,
+  updateLastSeen,
+  updateStatus,
+  updatePublic,
+  remove
+}

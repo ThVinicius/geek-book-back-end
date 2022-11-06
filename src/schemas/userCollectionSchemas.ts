@@ -26,8 +26,13 @@ const updateStatus = joi.object({
   statusId: joi.number().strict().greater(0).required()
 })
 
+const updatePublic = joi.object({
+  id: joi.number().integer().strict().greater(0).required(),
+  publicValue: joi.boolean().strict().required()
+})
+
 const remove = joi.object({
   id: joi.number().greater(0).required()
 })
 
-export default { create, updateLastSeen, updateStatus, remove }
+export default { create, updateLastSeen, updateStatus, updatePublic, remove }
