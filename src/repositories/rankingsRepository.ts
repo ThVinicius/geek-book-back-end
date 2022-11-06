@@ -1,11 +1,11 @@
-import { Prisma } from "@prisma/client"
-import prisma from "../database/db"
+import { Prisma } from '@prisma/client'
+import prisma from '../database/db'
 import {
   IRanking,
   IGetRanking,
   IGetUserCollection
-} from "../types/rankingsTypes"
-import handlePrismaError from "../utils/handlePrismaError"
+} from '../types/rankingsTypes'
+import handlePrismaError from '../utils/handlePrismaError'
 
 async function create(data: IRanking) {
   try {
@@ -14,14 +14,14 @@ async function create(data: IRanking) {
     const e = error as Prisma.PrismaClientKnownRequestError
 
     switch (e.code) {
-      case "P2002":
-        const messageError = "Essa obra já está ranqueada!"
+      case 'P2002':
+        const messageError = 'Essa obra já está ranqueada!'
 
         handlePrismaError(e, messageError)
         break
 
-      case "P2003":
-        const message = "Esse userCollectionId não existe!"
+      case 'P2003':
+        const message = 'Esse userCollectionId não existe!'
 
         handlePrismaError(e, message)
         break
@@ -39,8 +39,8 @@ async function remove(id: number) {
     const e = error as Prisma.PrismaClientKnownRequestError
 
     switch (e.code) {
-      case "P2025":
-        const messageError = "Registro não encontrado!"
+      case 'P2025':
+        const messageError = 'Registro não encontrado!'
 
         handlePrismaError(e, messageError)
 
@@ -62,20 +62,20 @@ async function update(id: number, userCollectionId: number) {
     const e = error as Prisma.PrismaClientKnownRequestError
 
     switch (e.code) {
-      case "P2002":
-        const msg = "Não é possivel ranquear a obra mais de uma vez!"
+      case 'P2002':
+        const msg = 'Não é possivel ranquear a obra mais de uma vez!'
 
         handlePrismaError(e, msg)
         break
 
-      case "P2003":
-        const message = "Esse userCollectionId não existe!"
+      case 'P2003':
+        const message = 'Esse userCollectionId não existe!'
 
         handlePrismaError(e, message)
         break
 
-      case "P2025":
-        const messageError = "Registro não encontrado!"
+      case 'P2025':
+        const messageError = 'Registro não encontrado!'
 
         handlePrismaError(e, messageError)
 
@@ -89,17 +89,21 @@ async function update(id: number, userCollectionId: number) {
   }
 }
 
-async function getAllByUserId(userId: number) {
+async function getAllByUserId(userId: number, getAll: boolean) {
+  const where = getAll
+    ? Prisma.sql`WHERE uc."userId" = ${userId}`
+    : Prisma.sql`WHERE uc."userId" = ${userId} AND uc.public = 'true'`
+
   return await prisma.$queryRaw<IGetRanking>`
     SELECT r.id AS "rankingId", position, uc.id AS "userCollectionId", 
       c.name, poster, synopsis, ca.name AS category, s.name AS status, 
-      "lastSeen"
+      "lastSeen", uc.public
     FROM rankings r
     JOIN "userCollections" uc ON uc.id = r."userCollectionId"
     JOIN collections c ON c.id = uc."collectionId"
     JOIN status s ON s.id = uc."statusId"
     JOIN categories ca ON  ca.id = c."categoryId"
-    WHERE uc."userId" = ${userId}
+    ${where}
     ORDER BY r.position ASC
     LIMIT 10;`
 }

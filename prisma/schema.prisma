@@ -73,6 +73,7 @@ model UserCollection {
   collectionId Int
   lastSeen     Float
   statusId     Int
+  public       Boolean    @default(true)
   createdAt    DateTime   @default(now()) @db.Timestamptz(6)
   user         User       @relation(fields: [userId], references: [id])
   collection   Collection @relation(fields: [collectionId], references: [id])

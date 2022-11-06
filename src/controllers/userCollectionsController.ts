@@ -1,14 +1,16 @@
-import { Request, Response } from "express"
-import userCollectionsService from "../services/userCollectionsService"
-import collectionsService from "../services/collectionsService"
-import { ICollection } from "../types/collectionTypes"
+import { Request, Response } from 'express'
+import userCollectionsService from '../services/userCollectionsService'
+import collectionsService from '../services/collectionsService'
+import { ICollection } from '../types/collectionTypes'
 
 async function create(req: Request, res: Response) {
   const { categoryId, name, synopsis, poster } = req.body as ICollection
 
-  const { statusId } = req.body as { statusId: number }
-
-  const { lastSeen } = req.body as { lastSeen: number }
+  const { lastSeen, statusId, publicValue } = req.body as {
+    lastSeen: number
+    statusId: number
+    publicValue: boolean
+  }
 
   const userId: number = res.locals.session
 
@@ -21,7 +23,8 @@ async function create(req: Request, res: Response) {
       userId,
       collectionId,
       lastSeen,
-      statusId
+      statusId,
+      public: publicValue
     },
     categoryId
   )
@@ -33,6 +36,7 @@ async function create(req: Request, res: Response) {
     poster,
     synopsis,
     lastSeen,
+    public: publicValue,
     status
   }
 
@@ -52,7 +56,7 @@ async function getByUserId(req: Request, res: Response) {
     const aux = Number(statusId)
 
     if (isNaN(aux) || aux < 0) {
-      return res.status(400).send("statusId deve ser um número maior que 0")
+      return res.status(400).send('statusId deve ser um número maior que 0')
     }
 
     where = { userId, statusId: aux }
@@ -97,6 +101,14 @@ async function updateStatus(req: Request, res: Response) {
   return res.sendStatus(200)
 }
 
+async function updatePublic(req: Request, res: Response) {
+  const { id, publicValue } = req.body as { id: number; publicValue: boolean }
+
+  await userCollectionsService.updatePublic(id, publicValue)
+
+  return res.sendStatus(200)
+}
+
 async function remove(req: Request, res: Response) {
   const id = Number(req.params.id)
 
@@ -105,4 +117,11 @@ async function remove(req: Request, res: Response) {
   return res.sendStatus(200)
 }
 
-export default { create, getByUserId, updateLastSeen, updateStatus, remove }
+export default {
+  create,
+  getByUserId,
+  updateLastSeen,
+  updateStatus,
+  updatePublic,
+  remove
+}

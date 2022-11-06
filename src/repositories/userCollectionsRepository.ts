@@ -1,7 +1,7 @@
-import prisma from "../database/db"
-import { Prisma } from "@prisma/client"
-import { IUserCollection } from "../types/userCollectionsTypes"
-import handlePrismaError from "../utils/handlePrismaError"
+import prisma from '../database/db'
+import { Prisma } from '@prisma/client'
+import { IUserCollection } from '../types/userCollectionsTypes'
+import handlePrismaError from '../utils/handlePrismaError'
 
 async function create(data: IUserCollection) {
   try {
@@ -13,15 +13,15 @@ async function create(data: IUserCollection) {
     const e = error as Prisma.PrismaClientKnownRequestError
 
     switch (e.code) {
-      case "P2002":
-        const messageError = "Não é possivel cadastrar a mesma obra duas vezes"
+      case 'P2002':
+        const messageError = 'Não é possivel cadastrar a mesma obra duas vezes'
 
         handlePrismaError(e, messageError)
 
         break
 
-      case "P2003":
-        const message = "Esse statusId não existe"
+      case 'P2003':
+        const message = 'Esse statusId não existe'
 
         handlePrismaError(e, message)
 
@@ -33,13 +33,18 @@ async function create(data: IUserCollection) {
   }
 }
 
-function getByUserId(where: { userId: number; statusId?: number }) {
+function getByUserId(where: {
+  userId: number
+  statusId?: number
+  public?: boolean
+}) {
   return prisma.userCollection.findMany({
     where,
     select: {
       id: true,
       lastSeen: true,
       status: { select: { id: true, name: true } },
+      public: true,
       collection: {
         select: {
           id: true,
@@ -67,8 +72,8 @@ async function updateLastSeen(
     const e = error as Prisma.PrismaClientKnownRequestError
 
     switch (e.code) {
-      case "P2025":
-        const messageError = "Registro não encontrado!"
+      case 'P2025':
+        const messageError = 'Registro não encontrado!'
 
         handlePrismaError(e, messageError)
 
@@ -90,8 +95,8 @@ async function updateStatus(id: number, statusId: number) {
     const e = error as Prisma.PrismaClientKnownRequestError
 
     switch (e.code) {
-      case "P2025":
-        const messageError = "Registro não encontrado!"
+      case 'P2025':
+        const messageError = 'Registro não encontrado!'
 
         handlePrismaError(e, messageError)
 
@@ -101,6 +106,13 @@ async function updateStatus(id: number, statusId: number) {
         break
     }
   }
+}
+
+function updatePublic(id: number, publicValue: boolean) {
+  return prisma.userCollection.update({
+    where: { id },
+    data: { public: publicValue }
+  })
 }
 
 async function remove(id: number) {
@@ -110,8 +122,8 @@ async function remove(id: number) {
     const e = error as Prisma.PrismaClientKnownRequestError
 
     switch (e.code) {
-      case "P2025":
-        const messageError = "Registro não encontrado!"
+      case 'P2025':
+        const messageError = 'Registro não encontrado!'
 
         handlePrismaError(e, messageError)
 
@@ -123,4 +135,11 @@ async function remove(id: number) {
   }
 }
 
-export default { create, getByUserId, updateLastSeen, updateStatus, remove }
+export default {
+  create,
+  getByUserId,
+  updateLastSeen,
+  updateStatus,
+  updatePublic,
+  remove
+}
