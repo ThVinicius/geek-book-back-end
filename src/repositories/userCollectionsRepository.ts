@@ -33,7 +33,11 @@ async function create(data: IUserCollection) {
   }
 }
 
-function getByUserId(where: { userId: number; statusId?: number }) {
+function getByUserId(where: {
+  userId: number
+  statusId?: number
+  public?: boolean
+}) {
   return prisma.userCollection.findMany({
     where,
     select: {

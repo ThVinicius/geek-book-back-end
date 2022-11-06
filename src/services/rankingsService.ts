@@ -1,5 +1,5 @@
-import rankingsRepository from "../repositories/rankingsRepository"
-import { IRanking } from "../types/rankingsTypes"
+import rankingsRepository from '../repositories/rankingsRepository'
+import { IRanking } from '../types/rankingsTypes'
 
 async function create(data: IRanking) {
   return await rankingsRepository.create(data)
@@ -13,12 +13,12 @@ async function update(id: number, userCollectionId: number) {
   return await rankingsRepository.update(id, userCollectionId)
 }
 
-async function getAllByUserId(userId: number) {
-  return await rankingsRepository.getAllByUserId(userId)
+async function getAllByUserId(userId: number, getAll = true) {
+  return await rankingsRepository.getAllByUserId(userId, getAll)
 }
 
-async function makeRanking(userId: number) {
-  const rankingDb = await getAllByUserId(userId)
+async function makeRanking(userId: number, getAll = true) {
+  const rankingDb = await getAllByUserId(userId, getAll)
 
   const ranking = []
 
