@@ -17,6 +17,10 @@ route.post(
   usersController.signIn
 )
 
-route.post('/signin/github', usersController.githubOauth)
+route.post(
+  '/signin/github',
+  schemaValidator(userSchemas.githubOauth),
+  usersController.githubOauth
+)
 
 export default route
