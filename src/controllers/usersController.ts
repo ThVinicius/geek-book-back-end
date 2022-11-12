@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import usersService from '../services/usersService'
 import { IUser } from '../types/userTypes'
 import sessionsService from '../services/sessionsService'
+import { OAuthType } from '@prisma/client'
 
 async function signUp(req: Request, res: Response) {
   const data = req.body as IUser
@@ -45,4 +46,30 @@ async function githubOauth(req: Request, res: Response) {
   })
 }
 
-export default { signUp, signIn, githubOauth }
+async function signUpOauth(req: Request, res: Response) {
+  const { nickname } = req.body as { nickname: string }
+
+  const data = res.locals.oAuth as {
+    nickname: string
+    email: string
+    password: null
+    avatar: string
+    authorizeType: OAuthType
+  }
+
+  data.nickname = nickname
+
+  const user = await usersService.createUser(data)
+
+  const session = sessionsService.createSession(user!)
+
+  await sessionsService.upsert(session)
+
+  return res.status(200).send({
+    token: session.token,
+    nickname: user!.nickname,
+    avatar: user!.avatar
+  })
+}
+
+export default { signUp, signIn, githubOauth, signUpOauth }

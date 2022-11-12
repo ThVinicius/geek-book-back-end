@@ -14,7 +14,11 @@ async function create(data: IUser) {
 
   delete data.confirmPassword
 
-  await usersRepository.insert(data)
+  await createUser(data)
+}
+
+async function createUser(data: IUser) {
+  return await usersRepository.insert(data)
 }
 
 function bcryptPassword(password: string) {
@@ -88,7 +92,7 @@ async function getDataGithub(code: string) {
 async function signUpOath(data: IOauthData) {
   const dbUser = await getByEmail(data.email, data.authorizeType)
 
-  if (dbUser === null) return await usersRepository.insert(data)
+  if (dbUser === null) return await createUser(data)
 
   return dbUser
 }
@@ -109,6 +113,7 @@ function createOauthToken(data: {}) {
 
 export default {
   create,
+  createUser,
   hanleSignIn,
   getDataGithub,
   signUpOath,

@@ -15,4 +15,8 @@ const signIn = joi.object({
 
 const githubOauth = joi.object({ code: joi.string().required() })
 
-export default { signUp, signIn, githubOauth }
+const signUpOauth = joi.object({
+  nickname: joi.string().trim().max(16).required()
+})
+
+export default { signUp, signIn, githubOauth, signUpOauth }
