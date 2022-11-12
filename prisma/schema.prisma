@@ -23,6 +23,7 @@ model User {
   share         Share?
   Ranking       Ranking[]
 
+  @@unique([email, authorizeType])
   @@map("users")
 }
 
