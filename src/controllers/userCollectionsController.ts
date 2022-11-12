@@ -12,7 +12,7 @@ async function create(req: Request, res: Response) {
     publicValue: boolean
   }
 
-  const userId: number = res.locals.session
+  const userId: number = res.locals.session.id
 
   const data = { categoryId, name, synopsis, poster }
 
@@ -44,7 +44,7 @@ async function create(req: Request, res: Response) {
 }
 
 async function getByUserId(req: Request, res: Response) {
-  const userId: number = res.locals.session
+  const userId: number = res.locals.session.id
 
   const { statusId } = req.query
 
@@ -68,7 +68,7 @@ async function getByUserId(req: Request, res: Response) {
 }
 
 async function updateLastSeen(req: Request, res: Response) {
-  const userId: number = res.locals.session
+  const userId: number = res.locals.session.id
 
   const { collectionId, lastSeen, increment } = req.body as {
     collectionId: number

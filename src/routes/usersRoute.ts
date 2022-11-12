@@ -17,4 +17,6 @@ route.post(
   usersController.signIn
 )
 
+route.post('/signin/github', usersController.githubOauth)
+
 export default route

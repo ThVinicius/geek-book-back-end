@@ -1,5 +1,5 @@
-import { Request, Response } from "express"
-import rankingsService from "../services/rankingsService"
+import { Request, Response } from 'express'
+import rankingsService from '../services/rankingsService'
 
 async function create(req: Request, res: Response) {
   const { userCollectionId, position } = req.body as {
@@ -7,7 +7,7 @@ async function create(req: Request, res: Response) {
     position: number
   }
 
-  const userId: number = res.locals.session
+  const userId: number = res.locals.session.id
 
   const data = { userId, userCollectionId, position }
 
@@ -36,7 +36,7 @@ async function updateUserCollection(req: Request, res: Response) {
 }
 
 async function get(_: Request, res: Response) {
-  const userId: number = res.locals.session
+  const userId: number = res.locals.session.id
 
   const ranking = await rankingsService.makeRanking(userId)
 
@@ -44,7 +44,7 @@ async function get(_: Request, res: Response) {
 }
 
 async function getMissingUserCollection(_: Request, res: Response) {
-  const userId: number = res.locals.session
+  const userId: number = res.locals.session.id
 
   const userCollections = await rankingsService.getMissingUserCollection(userId)
 

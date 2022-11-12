@@ -22,7 +22,7 @@ async function tokenValidate(req: Request, res: Response, next: NextFunction) {
 
   await sessionsService.validateSession(token)
 
-  res.locals.session = data.id
+  res.locals.session = data
 
   next()
 }
