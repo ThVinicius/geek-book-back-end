@@ -1,8 +1,8 @@
-import { Request, Response } from "express"
-import sharesService from "../services/sharesService"
+import { Request, Response } from 'express'
+import sharesService from '../services/sharesService'
 
 async function createLink(_: Request, res: Response) {
-  const userId: number = res.locals.session
+  const userId: number = res.locals.session.id
 
   const link = await sharesService.createLink(userId)
 

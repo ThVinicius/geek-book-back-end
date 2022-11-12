@@ -1,11 +1,12 @@
-import prisma from "../database/db"
-import { Prisma } from "@prisma/client"
-import { IUser } from "../types/userTypes"
-import handlePrismaError from "../utils/handlePrismaError"
+import prisma from '../database/db'
+import { Prisma, OAuthType } from '@prisma/client'
+import { IUser } from '../types/userTypes'
+import handlePrismaError from '../utils/handlePrismaError'
+import handleOauthError from '../utils/handleOauthError'
 
 async function insert(data: IUser) {
   try {
-    await prisma.user.create({ data })
+    return await prisma.user.create({ data })
   } catch (error) {
     const e = error as Prisma.PrismaClientKnownRequestError
 
@@ -13,12 +14,15 @@ async function insert(data: IUser) {
 
     const messageError = `O ${uniqueField} já está em uso!\nTente outro valor`
 
-    handlePrismaError(e, messageError)
+    if (data.authorizeType === 'EMAIL') handlePrismaError(e, messageError)
+    else handleOauthError(e, messageError, data)
   }
 }
 
-async function getByEmail(email: string) {
-  return await prisma.user.findUnique({ where: { email } })
+async function getByEmail(email: string, authorizeType: OAuthType) {
+  return await prisma.user.findUnique({
+    where: { email_authorizeType: { email, authorizeType } }
+  })
 }
 
 export default { insert, getByEmail }

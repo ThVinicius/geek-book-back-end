@@ -1,12 +1,11 @@
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 import tokenSchema from '../schemas/sessionSchema'
-import sessionsService from '../services/sessionsService'
 import { Request, Response, NextFunction } from 'express'
 
 dotenv.config()
 
-async function tokenValidate(req: Request, res: Response, next: NextFunction) {
+function oAuthtokenValidate(req: Request, res: Response, next: NextFunction) {
   const { error } = tokenSchema.validate(req.headers)
 
   if (error)
@@ -16,15 +15,15 @@ async function tokenValidate(req: Request, res: Response, next: NextFunction) {
 
   const token = authorization!.replace('Bearer ', '')
 
-  const secretKey: string = process.env.JWT_SECRET!
+  const secretKey: string = process.env.JWT_SECRET_OAUTH!
 
-  const data = <jwt.UserIDJwtPayload>jwt.verify(token, secretKey)
+  const data = <jwt.UserDataJwtPayload>jwt.verify(token, secretKey)
 
-  await sessionsService.validateSession(token)
+  const { email, nickname, avatar, password, authorizeType } = data
 
-  res.locals.session = data
+  res.locals.oAuth = { email, nickname, avatar, password, authorizeType }
 
   next()
 }
 
-export default tokenValidate
+export default oAuthtokenValidate

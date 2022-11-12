@@ -11,18 +11,25 @@ datasource db {
 }
 
 model User {
-  id          Int              @id @default(autoincrement())
-  nickname    String           @unique @db.VarChar(16)
-  avatar      String?
-  email       String           @unique
-  password    String
-  createdAt   DateTime         @default(now()) @db.Timestamptz(6)
-  session     Session?
-  userHistory UserCollection[]
-  share       Share?
-  Ranking     Ranking[]
+  id            Int              @id @default(autoincrement())
+  nickname      String           @unique @db.VarChar(16)
+  avatar        String?
+  email         String
+  password      String?
+  authorizeType OAuthType        @default(EMAIL)
+  createdAt     DateTime         @default(now()) @db.Timestamptz(6)
+  session       Session?
+  userHistory   UserCollection[]
+  share         Share?
+  Ranking       Ranking[]
 
+  @@unique([email, authorizeType])
   @@map("users")
+}
+
+enum OAuthType {
+  EMAIL
+  GITHUB
 }
 
 model Session {
