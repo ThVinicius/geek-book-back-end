@@ -4,15 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "migrate:test": "dotenv -e .env.test npx prisma migrate dev",
+    "seed": "prisma db seed",
+    "seed:test": "dotenv -e .env.test prisma db seed",
     "dev": "nodemon ./src/server.ts",
-    "dev-test": "npm run migrate-test && npm run seed-test && dotenv -e .env.test nodemon src/server.ts",
+    "dev:test": "npm run migrate:test && npm run seed:test && dotenv -e .env.test nodemon src/server.ts",
     "prisma": "prisma studio",
     "build": "prisma migrate deploy && prisma db seed && tsc",
     "start": "node ./dist/src/server.js",
-    "seed": "prisma db seed",
-    "migrate-test": "dotenv -e .env.test npx prisma migrate dev",
-    "seed-test": "dotenv -e .env.test prisma db seed",
-    "test": "dotenv -e .env.test -- jest --no-cache -i --verbose"
+    "test": "npm run migrate:test && dotenv -e .env.test -- jest --no-cache -i --verbose"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
