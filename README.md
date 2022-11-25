@@ -22,7 +22,7 @@
 
 <br/>
 
-# Descrição
+# Sumário
 
 - [Descrição](#description)
 - [Documentação da API](#api-reference)
@@ -58,13 +58,13 @@
 
 <div id='description'/>
 
-# Description
+# Descrição
 
 GeekBook é um gerenciador de manga, anime, séries e novels.
 
 </br>
 
-## Features
+## Funções
 
 - Crie uma conta e acesse-a
 - Registre uma obra e altere seu último capítulo/episódio visto
