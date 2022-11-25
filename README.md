@@ -22,60 +22,63 @@
 
 <br/>
 
-# Summary
+# Descrição
 
-- [Description](#description)
-- [API Reference](#api-reference)
-  - [Create an account](#sign-up)
-  - [Access account](#sign-in)
-  - [Category routes](#category-routes)
-    - [Get all categories](#get-categories)
-  - [Collection routes](#collection-routes)
-    - [Get collection by category](#get-collections-category)
-  - [Status routes](#status-routes)
-    - [Get status](#get-status)
-  - [User collection routes](#user-collection-routes)
-    - [Register a work in the user's collection](#post-user-collection)
-    - [Get all user collections](#get-user-collection)
-    - [Update the last chapter/episode of one of the works in the user's collection](#update-last-seen)
-    - [Update the status of one of the works in the user's collection](#update-status)
-    - [Delete a work from your collection](#delete-user-collection)
-  - [Ranking routes](#ranking-routes)
-    - [Position a work in your ranking](#post-ranking)
-    - [Remove a work from the ranking](#delete-ranking)
-    - [Update ranking position by another work](#update-ranking)
-    - [Get the top 10 user ranking](#get-ranking)
-    - [get all unranked user collections](#get-ranking-user-collection)
-  - [Share routes](#share-routes)
-    - [Create a share link](#post-share)
-    - [Get the link owner's collection and ranking](#get-share)
+- [Descrição](#description)
+- [Documentação da API](#api-reference)
+  - [Rotas de autenticação](#authentication-routes)
+    - [Criar uma conta](#sign-up)
+    - [Acessar uma conta](#sign-in)
+  - [Rotas da categoria](#category-routes)
+    - [Buscar todas as categorias](#get-categories)
+  - [Rotas da coleção](#collection-routes)
+    - [Buscar as coleções por categoria](#get-collections-category)
+  - [Rotas do status](#status-routes)
+    - [Buscar todos os status](#get-status)
+  - [Rotas da coleção do usuário](#user-collection-routes)
+    - [Registrar uma obra na coleção do usuário](#post-user-collection)
+    - [Buscar todas as coleções do usuário](#get-user-collection)
+    - [Atualizar o ultimo capitulo/episodio da obra na coleção do usuário](#update-last-seen)
+    - [Atualizar o status da obra na coleção do usuário](#update-status)
+    - [Deletar uma obra da coleção do usuário](#delete-user-collection)
+  - [Rotas do ranking](#ranking-routes)
+    - [Posicionar uma obra no ranking](#post-ranking)
+    - [Remover uma obra do ranking](#delete-ranking)
+    - [Substituir uma obra por outra na mesma posição do ranking](#update-ranking)
+    - [Buscar o top 10 da coleção do usuário](#get-ranking)
+    - [Buscar todas as obras não rankeados do usuário](#get-ranking-user-collection)
+  - [Rotas de compartilhamento](#share-routes)
+    - [Criar um link de compartilhamento](#post-share)
+    - [Buscar a coleção do usuário e o ranking do dono daquele link](#get-share)
+- [Variávies de ambiente](#environment-variables)
+- [Rodar localmente](#run-local)
 
 <div id='description'/>
 
 # Description
 
-GeekBook is a management of manga, anime, series and novels.
+GeekBook é um gerenciador de manga, anime, séries e novels.
 
 </br>
 
 ## Features
 
-- Create an account and access it
-- Register a work and change its last seen chapter/episode
-- Create a top 10 ranking of your registered works
-- Share your collection and ranking via a link
+- Crie uma conta e acesse-a
+- Registre uma obra e altere seu último capítulo/episódio visto
+- Crie um ranking top 10 de suas obras cadastradas
+- Compartilhe sua coleção e classificação por meio de um link
 
 </br>
 
 <div id='api-reference'/>
 
-## API Reference
+## Documentação da API
 
-### Authentication routes
+### Rotas de autenticação
 
 <div id='sign-up'/>
 
-#### Create an account
+#### Criar uma conta
 
 ```http
 POST /signup
@@ -95,18 +98,18 @@ POST /signup
 
 <h3>Error cases:</h3>
 
-| Status code | Cause                                                |
-| :---------- | :--------------------------------------------------- |
-| `400`       | _Request in wrong format_                            |
-| `409`       | _try to register with an existing email or nickname_ |
+| Status code | Cause                                      |
+| :---------- | :----------------------------------------- |
+| `400`       | _Requisição no formato incorreto_          |
+| `409`       | _Conflito de email ou nickname existentes_ |
 
-<h3>Success case (status code <span style="color:green">201</span>)</h3>
+<h3>Em caso de sucesso: (status code <span style="color:green">201</span>)</h3>
 
 #
 
 <div id='sign-in'/>
 
-### Access an account
+### Acessar uma conta
 
 ```http
 POST /signin
@@ -123,12 +126,12 @@ POST /signin
 
 <h3>Error cases:</h3>
 
-| Status code | Cause                                       |
-| :---------- | :------------------------------------------ |
-| `400`       | _Email and/or password in incorrect format_ |
-| `401`       | _Incorrect email and/or password_           |
+| Status code | Cause                             |
+| :---------- | :-------------------------------- |
+| `400`       | _Requisição no formato incorreto_ |
+| `401`       | _Email ou senha incorretos_       |
 
-<h3>Success case (status code <span style="color:green">200:</span>) and an object as a return. example:</h3>
+<h3>Em caso de sucesso (status code <span style="color:green">200:</span>) e um objeto com retorno. exemplo:</h3>
 
 ```json
 {
@@ -142,11 +145,11 @@ POST /signin
 
 <div id='category-routes'/>
 
-### Category routes
+### Rotas da categoria
 
 <div id='get-categories'/>
 
-#### Get all categories
+#### Buscar todas as categorias
 
 ```http
 GET /categories
@@ -154,7 +157,7 @@ GET /categories
 
 <h3>Response:</h3>
 
-<h3>Success case (status code <span style="color:green">200:</span>) and an array as a return. example:</h3>
+<h3>Em caso de sucesso (status code <span style="color:green">200:</span>) e um array com retorno. exemplo:</h3>
 
 ```json
 [
@@ -181,11 +184,11 @@ GET /categories
 
 <div id='collection-routes'/>
 
-### Collection routes
+### Rotas da coleção
 
 <div id='get-collections-category'/>
 
-#### Get all collections by category
+#### Buscar as coleções por categoria
 
 ```http
 GET /collections/:categoryId
@@ -194,7 +197,7 @@ GET /collections/:categoryId
 <h3>Request:</h3>
 
 <h4>Params:</h4>
-send by params
+Enviar por params
 
 | Params       | Type     | Description                      |
 | :----------- | :------- | :------------------------------- |
@@ -202,7 +205,7 @@ send by params
 
 <h3>Response:</h3>
 
-<h3>Success case (status code <span style="color:green">200:</span>) and an array as a return. example:</h3>
+<h3>Em caso de sucesso (status code <span style="color:green">200:</span>) e um array com retorno. exemplo:</h3>
 
 ```json
 [
@@ -229,11 +232,11 @@ send by params
 
 <div id='status-routes'/>
 
-### Status routes
+### Rotas do status
 
 <div id='get-status'/>
 
-#### Get all status
+#### Buscar todos os status
 
 ```http
 GET /status
@@ -260,11 +263,11 @@ GET /status
 
 <div id='user-collection-routes'/>
 
-### User collection routes
+### Rotas da coleção do usuário
 
 <div id='post-user-collection'/>
 
-#### Register a work in the user's collection
+#### Registrar uma obra na coleção do usuário
 
 ```http
 POST /user-collections
@@ -284,7 +287,7 @@ POST /user-collections
 | `statusId`   | `number` | **Required**, **greater than 0**       |
 
 <h4>Headers:</h4>
-Send the token (Bearer token)
+Enviar o token (Bearer token)
 
 | Params          | Type     | Description                            |
 | :-------------- | :------- | :------------------------------------- |
@@ -294,21 +297,21 @@ Send the token (Bearer token)
 
 <h3>Error cases:</h3>
 
-| Status code | Cause                              |
-| :---------- | :--------------------------------- |
-| `400`       | _Request in wrong format_          |
-| `401`       | _Invalid token_                    |
-| `404`       | _categoryId or statusId not found_ |
-| `426`       | _Outdated token_                   |
-| `498`       | _Expired token_                    |
+| Status code | Cause                                   |
+| :---------- | :-------------------------------------- |
+| `400`       | _Requisição no formato incorreto_       |
+| `401`       | _Token inválido_                        |
+| `404`       | _categoryId ou statusId não encontrado_ |
+| `426`       | _Token desatualizado_                   |
+| `498`       | _Token expirado_                        |
 
-<h3>Success case (status code <span style="color:green">201:</span>)</h3>
+<h3>Em caso de sucesso: (status code <span style="color:green">201:</span>)</h3>
 
 #
 
 <div id='get-user-collection'/>
 
-#### Get all user collections
+#### Buscar todas as coleções do usuário
 
 ```http
 GET /user-collections
@@ -317,7 +320,8 @@ GET /user-collections
 <h3>Request:</h3>
 
 <h4>Query</h4>
-If the statusId is passed, the returned list will be filtered by the statusId
+
+Se o `statusId` for passado, a lista retornada será filtrada pelo statusId
 
 Ex: `/user-collections?statusId=1`
 
@@ -326,7 +330,7 @@ Ex: `/user-collections?statusId=1`
 | `statusId` | `number` | **greater than 0** |
 
 <h4>Headers:</h4>
-Send the token (Bearer token)
+Enviar o token (Bearer token)
 
 | Params          | Type     | Description                            |
 | :-------------- | :------- | :------------------------------------- |
@@ -336,14 +340,14 @@ Send the token (Bearer token)
 
 <h3>Error cases:</h3>
 
-| Status code | Cause                     |
-| :---------- | :------------------------ |
-| `400`       | _Request in wrong format_ |
-| `401`       | _Invalid token_           |
-| `426`       | _Outdated token_          |
-| `498`       | _Expired token_           |
+| Status code | Cause                             |
+| :---------- | :-------------------------------- |
+| `400`       | _Requisição no formato incorreto_ |
+| `401`       | _Token inválido_                  |
+| `426`       | _Token desatualizado_             |
+| `498`       | _Token expirado_                  |
 
-<h3>Success case (status code <span style="color:green">200:</span>) and an array as a return. example:</h3>
+<h3>Em caso de sucesso: (status code <span style="color:green">200:</span>) e um array como retorno. example:</h3>
 
 ```json
 [
@@ -411,7 +415,7 @@ Send the token (Bearer token)
 
 <div id='update-last-seen'/>
 
-#### Update the last chapter/episode of one of the works in the user's collection
+#### Atualizar o ultimo capitulo/episodio da obra na coleção do usuário
 
 ```http
 PATCH /user-collections/last-seen
@@ -427,10 +431,10 @@ PATCH /user-collections/last-seen
 | `lastSeen`     | `number` | **greater than -1**              |
 | `increment`    | `number` | **valid(-1, 1)**                 |
 
-must send the lastSeen or the increment
+Deve se enviar o `lastSeen` ou o `increment`. Não é possivel mandar os dois juntos
 
 <h4>Headers:</h4>
-Send the token (Bearer token)
+Enviar o token (Bearer token)
 
 | Params          | Type     | Description                            |
 | :-------------- | :------- | :------------------------------------- |
@@ -440,21 +444,21 @@ Send the token (Bearer token)
 
 <h3>Error cases:</h3>
 
-| Status code | Cause                     |
-| :---------- | :------------------------ |
-| `400`       | _Request in wrong format_ |
-| `401`       | _Invalid token_           |
-| `404`       | _collectionId not found_  |
-| `426`       | _Outdated token_          |
-| `498`       | _Expired token_           |
+| Status code | Cause                             |
+| :---------- | :-------------------------------- |
+| `400`       | _Requisição no formato incorreto_ |
+| `401`       | _Token inválido_                  |
+| `404`       | _collectionId não encontrado_     |
+| `426`       | _Token desatualizado_             |
+| `498`       | _Token expirado_                  |
 
-<h3>Success case (status code <span style="color:green">200:</span>)</h3>
+<h3>Em caso de sucesso: (status code <span style="color:green">200:</span>)</h3>
 
 #
 
 <div id='update-status'/>
 
-#### Update the status of one of the works in the user's collection
+#### Atualizar o status da obra na coleção do usuário
 
 ```http
 PATCH /user-collections/status
@@ -482,21 +486,21 @@ Send the token (Bearer token)
 
 <h3>Error cases:</h3>
 
-| Status code | Cause                      |
-| :---------- | :------------------------- |
-| `400`       | _Request in wrong format_  |
-| `401`       | _Invalid token_            |
-| `404`       | _id or statusId not found_ |
-| `426`       | _Outdated token_           |
-| `498`       | _Expired token_            |
+| Status code | Cause                             |
+| :---------- | :-------------------------------- |
+| `400`       | _Requisição no formato incorreto_ |
+| `401`       | _Token inválido_                  |
+| `404`       | _id ou statusId não encontrado_   |
+| `426`       | _Token desatualizado_             |
+| `498`       | _Token expirado_                  |
 
-<h3>Success case (status code <span style="color:green">200:</span>)</h3>
+<h3>Em caso de sucesso: (status code <span style="color:green">200:</span>)</h3>
 
 #
 
 <div id='delete-user-collection'/>
 
-#### Delete a work from your collection
+#### Deletar uma obra da coleção do usuário
 
 ```http
 DELETE /user-collections/:id
@@ -513,7 +517,7 @@ DELETE /user-collections/:id
 id: user-collection id
 
 <h4>Headers:</h4>
-Send the token (Bearer token)
+Enviar o token (Bearer token)
 
 | Params          | Type     | Description                            |
 | :-------------- | :------- | :------------------------------------- |
@@ -523,25 +527,25 @@ Send the token (Bearer token)
 
 <h3>Error cases:</h3>
 
-| Status code | Cause                     |
-| :---------- | :------------------------ |
-| `400`       | _Request in wrong format_ |
-| `401`       | _Invalid token_           |
-| `404`       | _id not found_            |
-| `426`       | _Outdated token_          |
-| `498`       | _Expired token_           |
+| Status code | Cause                             |
+| :---------- | :-------------------------------- |
+| `400`       | _Requisição no formato incorreto_ |
+| `401`       | _Token inválido_                  |
+| `404`       | _id não encontrado_               |
+| `426`       | _Token desatualizado_             |
+| `498`       | _Token expirado_                  |
 
-<h3>Success case (status code <span style="color:green">200:</span>)</h3>
+<h3>Em caso de sucesso (status code <span style="color:green">200:</span>)</h3>
 
 #
 
 <div id='ranking-routes'/>
 
-### Ranking routes
+### Rotas do ranking
 
 <div id='post-ranking'/>
 
-#### Position a work in your ranking
+#### Posicionar uma obra no ranking
 
 ```http
 POST /rankings
@@ -576,13 +580,13 @@ Send the token (Bearer token)
 | `426`       | _Outdated token_             |
 | `498`       | _Expired token_              |
 
-<h3>Success case (status code <span style="color:green">201:</span>)</h3>
+<h3>Em caso de sucesso (status code <span style="color:green">201:</span>)</h3>
 
 #
 
 <div id='delete-ranking'/>
 
-#### Remove a work from the ranking
+#### Remover uma obra do ranking
 
 ```http
 DELETE /rankings/:id
@@ -599,7 +603,7 @@ DELETE /rankings/:id
 id: ranking id
 
 <h4>Headers:</h4>
-Send the token (Bearer token)
+Enviar o token (Bearer token)
 
 | Params          | Type     | Description                            |
 | :-------------- | :------- | :------------------------------------- |
@@ -617,13 +621,13 @@ Send the token (Bearer token)
 | `426`       | _Outdated token_          |
 | `498`       | _Expired token_           |
 
-<h3>Success case (status code <span style="color:green">201:</span>)</h3>
+<h3>Em caso de sucesso: (status code <span style="color:green">201:</span>)</h3>
 
 #
 
 <div id='update-ranking'/>
 
-#### Update ranking position by another work
+#### Substituir uma obra por outra na mesma posição do ranking
 
 ```http
 PATCH /rankings
@@ -651,22 +655,22 @@ Send the token (Bearer token)
 
 <h3>Error cases:</h3>
 
-| Status code | Cause                                                |
-| :---------- | :--------------------------------------------------- |
-| `400`       | _Request in wrong format_                            |
-| `401`       | _Invalid token_                                      |
-| `404`       | _id or userCollectionId not found_                   |
-| `409`       | _try to update the ranking by an already ranked one_ |
-| `426`       | _Outdated token_                                     |
-| `498`       | _Expired token_                                      |
+| Status code | Cause                                                     |
+| :---------- | :-------------------------------------------------------- |
+| `400`       | _Requisição no formato incorreto_                         |
+| `401`       | _Token inválido_                                          |
+| `404`       | _id ou userCollectionId não encontrado_                   |
+| `409`       | _tentar atualizar o ranking por uma obra já classificada_ |
+| `426`       | _Token desatualizado_                                     |
+| `498`       | _Token expirado_                                          |
 
-<h3>Success case (status code <span style="color:green">200:</span>)</h3>
+<h3>Em caso de sucesso: (status code <span style="color:green">200:</span>)</h3>
 
 #
 
 <div id='get-ranking'/>
 
-#### Get the top 10 user ranking
+#### Buscar o top 10 da coleção do usuário
 
 ```http
 GET /rankings
@@ -675,7 +679,7 @@ GET /rankings
 <h3>Request:</h3>
 
 <h4>Headers:</h4>
-Send the token (Bearer token)
+Enviar o token (Bearer token)
 
 | Params          | Type     | Description                            |
 | :-------------- | :------- | :------------------------------------- |
@@ -685,14 +689,14 @@ Send the token (Bearer token)
 
 <h3>Error cases:</h3>
 
-| Status code | Cause                     |
-| :---------- | :------------------------ |
-| `400`       | _Request in wrong format_ |
-| `401`       | _Invalid token_           |
-| `426`       | _Outdated token_          |
-| `498`       | _Expired token_           |
+| Status code | Cause                             |
+| :---------- | :-------------------------------- |
+| `400`       | _Requisição no formato incorreto_ |
+| `401`       | _Token inválido_                  |
+| `426`       | _Token desatualizado_             |
+| `498`       | _Token expirado_                  |
 
-<h3>Success case (status code <span style="color:green">200:</span>) and an array as a return. example:</h3>
+<h3>Em caso de sucesso: (status code <span style="color:green">200:</span>) e um array como retorno. example:</h3>
 
 ```json
 [
@@ -813,7 +817,7 @@ Send the token (Bearer token)
 
 <div id='get-ranking-user-collection'/>
 
-#### get all unranked user collections
+#### Buscar todas as obras não rankeados do usuário
 
 ```http
 GET /rankings/user-collections
@@ -832,14 +836,14 @@ Send the token (Bearer token)
 
 <h3>Error cases:</h3>
 
-| Status code | Cause                     |
-| :---------- | :------------------------ |
-| `400`       | _Request in wrong format_ |
-| `401`       | _Invalid token_           |
-| `426`       | _Outdated token_          |
-| `498`       | _Expired token_           |
+| Status code | Cause                             |
+| :---------- | :-------------------------------- |
+| `400`       | _Requisição no formato incorreto_ |
+| `401`       | _Token inválido_                  |
+| `426`       | _Token desatualizado_             |
+| `498`       | _Token expirado_                  |
 
-<h3>Success case (status code <span style="color:green">200:</span>) and an array as a return. example:</h3>
+<h3>Em caso de sucesso: (status code <span style="color:green">200:</span>) e um array como retorno. example:</h3>
 
 ```json
 [
@@ -859,11 +863,11 @@ Send the token (Bearer token)
 
 <div id='share-routes'/>
 
-### Share routes
+### Rotas de compartilhamento
 
 <div id='post-share'/>
 
-#### Create a share link
+#### Criar um link de compartilhamento
 
 ```http
 POST /shares
@@ -872,7 +876,7 @@ POST /shares
 <h3>Request:</h3>
 
 <h4>Headers:</h4>
-Send the token (Bearer token)
+Enviar o token (Bearer token)
 
 | Params          | Type     | Description                            |
 | :-------------- | :------- | :------------------------------------- |
@@ -889,7 +893,7 @@ Send the token (Bearer token)
 | `426`       | _Outdated token_          |
 | `498`       | _Expired token_           |
 
-<h3>Success case (status code <span style="color:green">201:</span>) and an object as a return. example:</h3>
+<h3>Em caso de sucesso: (status code <span style="color:green">201:</span>) e um objeto como retorno. example:</h3>
 
 ```json
 {
@@ -903,7 +907,7 @@ Send the token (Bearer token)
 
 <div id='get-share'/>
 
-#### Get the link owner's collection and ranking
+#### Buscar a coleção do usuário e o ranking do dono daquele link
 
 ```http
 GET /share/:shortUrl
@@ -912,7 +916,7 @@ GET /share/:shortUrl
 <h3>Request:</h3>
 
 <h4>Params:</h4>
-Send the token (Bearer token)
+Enviar o token (Bearer token)
 
 | Params     | Type     | Description                           |
 | :--------- | :------- | :------------------------------------ |
@@ -922,15 +926,15 @@ Send the token (Bearer token)
 
 <h3>Error cases:</h3>
 
-| Status code | Cause                     |
-| :---------- | :------------------------ |
-| `400`       | _Request in wrong format_ |
-| `401`       | _Invalid token_           |
-| `404`       | _link not found_          |
-| `426`       | _Outdated token_          |
-| `498`       | _Expired token_           |
+| Status code | Cause                             |
+| :---------- | :-------------------------------- |
+| `400`       | _Requisição no formato incorreto_ |
+| `401`       | _Token inválido_                  |
+| `404`       | _link não encontrado_             |
+| `426`       | _Token desatualizado_             |
+| `498`       | _Token expirado_                  |
 
-<h3>Success case (status code <span style="color:green">200:</span>) and an object as a return. example:</h3>
+<h3>Em caso de sucesso (status code <span style="color:green">200:</span>) e um objeto como retorno. example:</h3>
 
 ```json
 {
@@ -1112,9 +1116,11 @@ Send the token (Bearer token)
 
 #
 
-## Environment Variables
+<div id='environment-variables'/>
 
-To run this project, you will need to add the following environment variables to your .env file
+## Variáveis de ambiente
+
+Para executar este projeto, você precisará adicionar as seguintes variáveis ​​de ambiente ao seu arquivo `.env`
 
 `DATABASE_URL = postgres://UserName:Password@Hostname:5432/DatabaseName`
 
@@ -1124,39 +1130,41 @@ To run this project, you will need to add the following environment variables to
 
 </br>
 
-## Run Locally
+<div id='run-local'/>
 
-Clone the project
+## Rodar localmente
+
+Clone o projeto
 
 ```bash
   git clone https://github.com/ThVinicius/geekBook_backEnd.git
 ```
 
-Go to the project directory
+Vá para o diretório do projeto
 
 ```bash
   cd geekBook_backEnd
 ```
 
-Install dependencies
+Instale as dependências
 
 ```bash
   npm install
 ```
 
-Create database
+Crie o banco de dados
 
 ```bash
   npx prisma migrate dev
 ```
 
-Create seed
+Crie as sementes
 
 ```bash
   npm run seed
 ```
 
-Start the server
+Inicie o servidor
 
 ```bash
   npm run dev
@@ -1169,11 +1177,3 @@ Start the server
 - [Awesome Badges](https://github.com/Envoy-VC/awesome-badges)
 
 </br>
-
-## Authors
-
-- Vinicius Pacheco is a student at Driven Education and is putting effort into it to switch careers. Nowadays he works with Engineering,
-  looking forward to become a Dev.
-  <br/>
-
-#
