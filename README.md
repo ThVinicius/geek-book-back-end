@@ -29,6 +29,8 @@
   - [Rotas de autenticação](#authentication-routes)
     - [Criar uma conta](#sign-up)
     - [Acessar uma conta](#sign-in)
+    - [Login com o github](#signin-github)
+    - [Cadastro com o github](#signup-github)
   - [Rotas da categoria](#category-routes)
     - [Buscar todas as categorias](#get-categories)
   - [Rotas da coleção](#collection-routes)
@@ -73,6 +75,8 @@ GeekBook é um gerenciador de manga, anime, séries e novels.
 <div id='api-reference'/>
 
 ## Documentação da API
+
+<div id='authentication-routes'/>
 
 ### Rotas de autenticação
 
@@ -142,6 +146,97 @@ POST /signin
 ```
 
 #
+
+<div id='signin-github'/>
+
+#### Login com github
+
+```http
+POST /signin/github
+```
+
+<h3>Request:</h3>
+Enviar o código de acesso, que o github disponibiliza ao fazer a permissão de acesso, pelo body
+
+| Params | Type     | Description  |
+| :----- | :------- | :----------- |
+| `code` | `string` | **Required** |
+
+<h3>Response:</h3>
+
+<h3>Error cases:</h3>
+
+| Status code | Cause                             |
+| :---------- | :-------------------------------- |
+| `400`       | _Requisição no formato incorreto_ |
+| `401`       | _Código inválido ou incorreto_    |
+| `409`       | _Conflito com o nickname_         |
+
+Em caso de conflito é também mandado um token com as informações do usuário para poder terminar seu cadastro na rota de [cadastro com o github](#signup-github)
+
+<h3>Em caso de sucesso (status code <span style="color:green">200:</span>) e um objeto com retorno. exemplo:</h3>
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjY1OTcxMTg1LCJleHAiOjE2Njg1NjMxODV9.2_7HCz4GjAE5RzmTQhFVhSAjqLBRkX51pRJ-3BCarRQ",
+  "nickname": "pacheco",
+  "avatar": "https://uploads.jovemnerd.com.br/wp-content/uploads/2021/08/confira-o-elenco-da-serie-live-action-de-avatar-a-lenda-de-aang.jpg"
+}
+```
+
+<div id='signup-github'/>
+
+#### Cadastro com o github
+
+Caso o login com o github de errado é necessário fazer o cadastro do nickname
+
+Caso de erro do login:
+
+- username do github já esta em uso.
+  - nesse caso é solicitado ao usuário cadastrado um nickname único
+
+```http
+POST /signup/oauth
+```
+
+<h3>Request (body):</h3>
+
+| Params     | Type     | Description                         |
+| :--------- | :------- | :---------------------------------- |
+| `nickname` | `string` | **Required**, **trim**, **max(16)** |
+
+<h4>Headers:</h4>
+Enviar o token fornecido na rota de login com o github (Bearer token)
+
+| Params          | Type     | Description                            |
+| :-------------- | :------- | :------------------------------------- |
+| `Authorization` | `string` | **required**, **Starting with Bearer** |
+
+<h3>Response:</h3>
+
+<h3>Error cases:</h3>
+
+| Status code | Cause                             |
+| :---------- | :-------------------------------- |
+| `400`       | _Requisição no formato incorreto_ |
+| `401`       | _Token inválido_                  |
+| `409`       | _Conflito com o nickname_         |
+| `426`       | _Token desatualizado_             |
+| `498`       | _Token expirado_                  |
+
+Em caso de conflito é também mandado um token com as informações do usuário.
+
+<h3>Response:</h3>
+
+<h3>Em caso de sucesso (status code <span style="color:green">200:</span>) e um objeto com retorno. exemplo:</h3>
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjY1OTcxMTg1LCJleHAiOjE2Njg1NjMxODV9.2_7HCz4GjAE5RzmTQhFVhSAjqLBRkX51pRJ-3BCarRQ",
+  "nickname": "pacheco",
+  "avatar": "https://uploads.jovemnerd.com.br/wp-content/uploads/2021/08/confira-o-elenco-da-serie-live-action-de-avatar-a-lenda-de-aang.jpg"
+}
+```
 
 <div id='category-routes'/>
 
@@ -1122,11 +1217,36 @@ Enviar o token (Bearer token)
 
 Para executar este projeto, você precisará adicionar as seguintes variáveis ​​de ambiente ao seu arquivo `.env`
 
-`DATABASE_URL = postgres://UserName:Password@Hostname:5432/DatabaseName`
+`DATABASE_URL`
 
-`PORT = number #recommended:5000`
+- Ex: postgres://UserName:Password@Hostname:5432/DatabaseName
 
-`JWT_SECRET = any string`
+`PORT`
+
+- número da porta (recomendado 5000)
+
+`JWT_SECRET`
+
+- qualquer string
+
+`JWT_SECRET_OAUTH`
+
+- qualquer string
+
+`CLIENT_ID`
+
+- número do client_id do github oauth
+
+`CLIENT_SECRET=`
+
+- string secreto do github oauth
+
+`REDIRECT_URL`
+
+- Deve terminar com `/oauth/github/`
+  - Ex: localhost:5000/oauth/github/
+
+[Github OAuth Docs](https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app)
 
 </br>
 
