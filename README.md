@@ -42,6 +42,7 @@
     - [Buscar todas as coleções do usuário](#get-user-collection)
     - [Atualizar o ultimo capitulo/episodio da obra na coleção do usuário](#update-last-seen)
     - [Atualizar o status da obra na coleção do usuário](#update-status)
+    - [Atualizar a visualização da obra na coleção do usuário](#update-public)
     - [Deletar uma obra da coleção do usuário](#delete-user-collection)
   - [Rotas do ranking](#ranking-routes)
     - [Posicionar uma obra no ranking](#post-ranking)
@@ -372,14 +373,15 @@ POST /user-collections
 
 <h4>Body</h4>
 
-| Params       | Type     | Description                            |
-| :----------- | :------- | :------------------------------------- |
-| `categoryId` | `number` | **Required**, **greater than 0**       |
-| `name`       | `string` | **Required**, **trim**                 |
-| `synopsis`   | `string` | **Required**, **allow(null)**          |
-| `poster`     | `string` | **Required**, **uri**, **allow(null)** |
-| `lastSeen`   | `number` | **Required**, **greater than -1**      |
-| `statusId`   | `number` | **Required**, **greater than 0**       |
+| Params        | Type      | Description                            |
+| :------------ | :-------- | :------------------------------------- |
+| `categoryId`  | `number`  | **Required**, **greater than 0**       |
+| `name`        | `string`  | **Required**, **trim**                 |
+| `synopsis`    | `string`  | **Required**, **allow(null)**          |
+| `poster`      | `string`  | **Required**, **uri**, **allow(null)** |
+| `lastSeen`    | `number`  | **Required**, **greater than -1**      |
+| `statusId`    | `number`  | **Required**, **greater than 0**       |
+| `publicValue` | `boolean` | **Required**                           |
 
 <h4>Headers:</h4>
 Enviar o token (Bearer token)
@@ -571,7 +573,7 @@ PATCH /user-collections/status
 id: user-collection id
 
 <h4>Headers:</h4>
-Send the token (Bearer token)
+Enviar o token (Bearer token)
 
 | Params          | Type     | Description                            |
 | :-------------- | :------- | :------------------------------------- |
@@ -586,6 +588,48 @@ Send the token (Bearer token)
 | `400`       | _Requisição no formato incorreto_ |
 | `401`       | _Token inválido_                  |
 | `404`       | _id ou statusId não encontrado_   |
+| `426`       | _Token desatualizado_             |
+| `498`       | _Token expirado_                  |
+
+<h3>Em caso de sucesso: (status code <span style="color:green">200:</span>)</h3>
+
+#
+
+<div id='update-public'/>
+
+#### Atualizar a visualização da obra na coleção do usuário
+
+```http
+PATCH /user-collections/public
+```
+
+<h3>Request:</h3>
+
+<h4>Body</h4>
+
+| Params        | Type      | Description                      |
+| :------------ | :-------- | :------------------------------- |
+| `id`          | `number`  | **Required**, **greater than 0** |
+| `publicValue` | `boolean` | **Required**                     |
+
+id: user-collection id
+
+<h4>Headers:</h4>
+Enviar o token (Bearer token)
+
+| Params          | Type     | Description                            |
+| :-------------- | :------- | :------------------------------------- |
+| `Authorization` | `string` | **required**, **Starting with Bearer** |
+
+<h3>Response:</h3>
+
+<h3>Error cases:</h3>
+
+| Status code | Cause                             |
+| :---------- | :-------------------------------- |
+| `400`       | _Requisição no formato incorreto_ |
+| `401`       | _Token inválido_                  |
+| `404`       | _id não encontrado_               |
 | `426`       | _Token desatualizado_             |
 | `498`       | _Token expirado_                  |
 
