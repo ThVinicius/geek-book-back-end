@@ -1298,6 +1298,9 @@ Para executar este projeto, você precisará adicionar as seguintes variáveis �
 
 ## Rodar localmente
 
+Versão do NodeJS
+16.15.0
+
 Clone o projeto
 
 ```bash
