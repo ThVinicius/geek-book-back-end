@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE "userCollections" ALTER COLUMN "lastSeen" SET DATA TYPE DOUBLE PRECISION;
