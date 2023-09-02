@@ -1,6 +1,6 @@
-import { ICreateUserDto } from '../dto/create-user.dto.interface';
-import { IUser } from '../entities/user.entity.interface';
-import { IUserRepository } from '../repositories/user.repository.interface';
+import { IUserRepository } from 'src/domain/user/repositories/user.repository.interface';
+import { ICreateUserDto } from '../../../domain/user/dto/create-user.dto.interface';
+import { IUser } from '../../../domain/user/entities/user.entity.interface';
 
 export class UserRepositoryInMemory implements IUserRepository {
   private users: IUser[] = [];

@@ -1,4 +1,4 @@
-import { AuthType } from '../../../domain/auth/enums/auth-type.enum';
+import { AuthType } from '../../auth/enums/auth-type.enum';
 
 export class ICreateUserDto {
   email: string;

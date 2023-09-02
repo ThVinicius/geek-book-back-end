@@ -1,6 +1,6 @@
 import { HashMock } from '../__mocks__/hash.mock';
 import { UserRepositoryInMemory } from '../__mocks__/user.repository.mock';
-import { ICreateUserDto } from '../dto/create-user.dto.interface';
+import { ICreateUserDto } from '../../../domain/user/dto/create-user.dto.interface';
 import { CreateUseCase } from './create.use-case';
 
 describe('CreateUseCase', () => {

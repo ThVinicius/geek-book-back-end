@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { AuthType } from '../../../domain/auth/enums/auth-type.enum';
+import { AuthType } from 'src/domain/auth/enums/auth-type.enum';
 import { IUser } from 'src/domain/user/entities/user.entity.interface';
 
 @Entity({ name: 'users' })

@@ -1,7 +1,7 @@
 import * as bcrypt from 'bcrypt';
-import { IHash } from '../@libs/hash.interface';
+import { IHash } from '../../domain/interfaces/libs/hash.interface';
 
-export class HashProvider implements IHash {
+export class HashLib implements IHash {
   sync(text: string, saltRounds: number): string {
     return bcrypt.hashSync(text, saltRounds);
   }

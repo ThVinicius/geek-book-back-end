@@ -6,8 +6,8 @@ export const dataSource = new DataSource({
   port: 5432,
   username: 'postgres',
   password: '123',
-  database: 'geek_book',
-  entities: [__dirname + '/../../**/*.entity{.ts,.js}'],
+  database: 'geekbook',
+  entities: [__dirname + '/src/infra/**/*.entity{.ts,.js}'], //'/../../../**/*.entity{.ts,.js}'
   migrations: [__dirname + '/../migrations/**/*{.ts,.js}'],
   synchronize: false,
 });

@@ -1,4 +1,4 @@
-import { IHash } from '../providers/hash.interface';
+import { IHash } from 'src/domain/interfaces/libs/hash.interface';
 
 export class HashMock implements IHash {
   sync(value: string, saltRounds: number): string {

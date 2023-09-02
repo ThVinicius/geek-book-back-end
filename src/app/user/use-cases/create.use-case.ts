@@ -1,6 +1,6 @@
-import { ICreateUserDto } from '../dto/create-user.dto.interface';
-import { IHash } from '../providers/hash.interface';
-import { IUserRepository } from '../repositories/user.repository.interface';
+import { IUserRepository } from 'src/domain/user/repositories/user.repository.interface';
+import { ICreateUserDto } from '../../../domain/user/dto/create-user.dto.interface';
+import { IHash } from 'src/domain/interfaces/libs/hash.interface';
 
 export class CreateUseCase {
   constructor(
